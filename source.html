@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+
+<body>
+    <div class="container">
+        <div class="row" style="height:200px; background-color: grey"></div>
+        <div class="row" style="height:300px; background-color: white; border: 2px solid black">
+            <div class="col-md-6">
+                <p style="text-align:center">General Assumptions</p>
+                <form id="generalAssumptionsForm">
+                  Discount Rate (%):<br>
+                  <input type="number" name="discountRate" id="discountRate" value="2.5">
+                  <br>
+                </form>
+
+            </div>
+            <div class="col-md-6">
+                <p style="text-align:center">General Details</p>
+                <form id="generalDetailsForm">
+                  Year of Birth:<br>
+                  <input type="number" name="yearBirth" id="yearBirth">
+                  <br>
+                  Year of Accident:<br>
+                  <input type="number" name="yearAccident" id="yearAccident" onchange="calcYear()">
+                  <br>
+                  <div id="calcYearDiv"></div>
+                  <!--Year of Calculation:<br>
+                  <input type="number" name="yearCalc" id="yearCalc" onchange="postEarningsSetup()">-->
+                </form>
+
+            </div>       
+        </div>
+        <div class="row" style="height:500px; background-color: white" id="earningsSection">
+            <div class="col-md-6" style="background-color: white; border: 1px solid black">
+                <p style="text-align:center"><em><b>Pre-Accident</b></em></p>
+                <form id="preAccidentForm">
+                  Pre-Accident Retirement Age:<br>
+                  <input type="number" name="preAccidentRetirement" id="preAccidentRetirement">
+                  <br>
+                  Ceiling Age:<br>
+                  <input type="number" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
+                  <br>
+                  Earnings @ Accident:<br>
+                  <input type="number" name="preEarningsAccident" id="preEarningsAccident">
+                  <br>
+                  Earnings @ Ceiling:<br>
+                  <input type="number" name="preEarningsCeiling" id="preEarningsCeiling">
+                </form>
+            </div>
+            <div class="col-md-6" style="background-color: white; border: 1px solid black">
+                <p style="text-align:center"><em><b>Post-Accident</b></em></p>
+                <form id="postAccidentForm">
+                  Post-Accident Retirement Age:<br>
+                  <input type="number" name="postAccidentRetirement" id="postAccidentRetirement">
+                  <br>
+                  Ceiling Age:<br>
+                  <input type="number" name="postAccidentCeilingAge" id="postAccidentCeilingAge" value="45">
+                  <br>
+                  Actual Earnings Since Accident:<br>
+                  <div id="postAccidentActuals"></div>
+                  <br>
+                  Earnings @ Ceiling:<br>
+                  <input type="number" name="postEarningsCeiling" id="postEarningsCeiling">
+                </form>
+            </div>
+
+        </div>
+        <div class="row" style="height:30px; background-color: white">
+            <button onclick="calculate()" style="margin: auto">Calculate</button>
+            <input type="button" onclick="clearAll()" style="margin: auto" value="Clear All">
+        </div>
+        <div class="row" style="height:20px; background-color: white"></div>
+        <div class="row" style="height:100px; background-color: white">
+            <div class="col-md-12">
+                <p style="text-align: center"><b>Result</b></p>
+                <p style="text-align: center" id="preResult"><b></b></p>
+                <p style="text-align: center" id="postResult"><b></b></p>
+            </div>
+        </div>
+        <div class="row" style="height:200px; background-color: grey"></div>
+    </div>
+
+</body>
+
+<script>
+    var allForms = ["generalAssumptionsForm","generalDetailsForm","preAccidentForm"];
+    var generalAssumptionsForm = ["generalAssumptionsForm"];
+    var generalDetailsForm = ["generalDetailsForm"];
+    
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
+    function calcYear(){
+        var calcYearText = "";
+        calcYearText = "Year of Calculation:<br><input type=\"number\" name=\"yearCalc\" id=\"yearCalc\" onchange=\"postEarningsSetup()\">";
+        document.getElementById("calcYearDiv").innerHTML = calcYearText;
+    }
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
+    function postEarningsSetup(){
+        var postEarningsText = "";
+        document.getElementById("earningsSection").style.height = "500px";
+        document.getElementById("postAccidentActuals").innerHTML = "";
+        var yearAcc = parseFloat(document.getElementById("yearAccident").value);
+        var yearCalc = parseFloat(document.getElementById("yearCalc").value);
+        
+        var pastPeriods = yearCalc - yearAcc + 1;
+
+        for (i = 0; i < pastPeriods; i++){
+            postEarningsText += (yearAcc + i) + " <input type=\"number\" name=\"pastEarnings" + i + "\" id=\"pastEarnings" + i + "\"><br>";
+        }
+        document.getElementById("postAccidentActuals").innerHTML = postEarningsText;
+        document.getElementById("earningsSection").style.height = (500 + pastPeriods*20) + "px";
+    }
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
+    function calculate(){
+        var accidentEarnings = parseFloat(document.getElementById("preEarningsAccident").value);
+        var yearAcc = parseFloat(document.getElementById("yearAccident").value);
+        var yearCalc = parseFloat(document.getElementById("yearCalc").value);
+        var discountRate = 1 + parseFloat(document.getElementById("discountRate").value)/100;
+        var yearBirth = parseFloat(document.getElementById("yearBirth").value);
+        
+/*---------------------------------------------------------------------------------------------------------------*/
+// PRE-ACCIDENT
+/*---------------------------------------------------------------------------------------------------------------*/
+        var preAccidentCeiling = parseFloat(document.getElementById("preEarningsCeiling").value);
+        var preAccidentCeilingAge = parseFloat(document.getElementById("preAccidentCeilingAge").value);
+        var preAccidentRetirementAge = parseFloat(document.getElementById("preAccidentRetirement").value);
+        var periods = Math.ceil(preAccidentRetirementAge - (yearAcc - yearBirth));
+        var income = new Array();
+        var age = new Array();
+        var year = new Array();
+        var tax = new Array();
+        var discount = new Array();
+        var survival = new Array();
+        var result = 0;
+        var annualIncrease = (preAccidentCeiling - accidentEarnings) / (preAccidentCeilingAge - (yearAcc - yearBirth) - 1);
+
+        for (i = 0; i < periods; i++){
+            age[i] = i + 1 + yearAcc - yearBirth;
+            
+            year[i] = yearAcc + i; 
+
+            if(i == 0){
+                income[i] = accidentEarnings;
+            }
+            else {
+                if(age[i] > preAccidentCeilingAge){
+                    income[i] = income[i-1];
+                }
+                else {
+                    income[i] = accidentEarnings + annualIncrease * i;
+                }
+            }
+
+            tax[i] = income[i] * 0.1;
+
+            discount[i] = 1 / (Math.pow(discountRate,i+1));
+            
+            if(year[i] < yearCalc){
+                survival[i] = 1;
+            }            
+            else {
+                survival[i] = 0.99;    
+            }
+
+            result += (income[i] - tax[i]) * discount[i] * survival[i];
+            //result += income[i];
+            //alert(age[i] + " " + year[i] + " " + income[i] + " " + tax[i] + " " + discount[i] + " " + survival[i]);
+        }
+
+        document.getElementById("preResult").innerHTML = "Pre-Accident = R" + result;
+
+/*---------------------------------------------------------------------------------------------------------------*/
+// PRE-ACCIDENT
+/*---------------------------------------------------------------------------------------------------------------*/
+
+
+/*---------------------------------------------------------------------------------------------------------------*/
+// POST-ACCIDENT
+/*---------------------------------------------------------------------------------------------------------------*/
+        var postAccidentCeiling = parseFloat(document.getElementById("postEarningsCeiling").value);
+        var postAccidentCeilingAge = parseFloat(document.getElementById("postAccidentCeilingAge").value);
+        var postAccidentRetirementAge = parseFloat(document.getElementById("postAccidentRetirement").value);
+        //var postPeriods = Math.ceil(postAccidentRetirementAge - (yearAcc - yearBirth));
+        var postIncome = new Array();
+        var postAge = new Array();
+        var postYear = new Array();
+        var postTax = new Array();
+        var postDiscount = new Array();
+        var postSurvival = new Array();
+        var postResult = 0;
+        var postAnnualIncrease = (postAccidentCeiling - accidentEarnings) / (postAccidentCeilingAge - (yearAcc - yearBirth) - 1);
+        var eliminationInidicator = 1;
+
+
+        for (i = 0; i < periods; i++){
+            postAge[i] = i + 1 + yearAcc - yearBirth;
+            
+            postYear[i] = yearAcc + i; 
+
+            if(postAge[i] > postAccidentRetirementAge){
+                eliminationInidicator = 0;
+            }
+            else {
+                eliminationInidicator = 1;
+            }
+
+            if(i == 0){
+                postIncome[i] = accidentEarnings;
+            }
+            else {
+                if(postAge[i] > postAccidentCeilingAge){
+                    postIncome[i] = postIncome[i-1] * eliminationInidicator;
+                }
+                else {
+                    postIncome[i] = (accidentEarnings + postAnnualIncrease * i) * eliminationInidicator;
+                }
+            }
+
+            postTax[i] = postIncome[i] * 0.1 * eliminationInidicator;
+
+            postDiscount[i] = 1 / (Math.pow(discountRate,i+1));
+            
+            if(postYear[i] < yearCalc){
+                postSurvival[i] = 1;
+            }            
+            else {
+                postSurvival[i] = 0.99;    
+            }
+
+            postResult += (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i];
+            //postResult += postIncome[i];
+        }
+
+        document.getElementById("postResult").innerHTML = "Post-Accident = R" + postResult;
+
+/*---------------------------------------------------------------------------------------------------------------*/
+// POST-ACCIDENT
+/*---------------------------------------------------------------------------------------------------------------*/
+
+    }
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
+
+    //Clear function not working.. FFS!
+    function clearAll(){
+        alert("I am here");
+        document.getElementByID("generalAssumptionsForm").reset();
+        document.getElementByID("generalDetailsForm").reset();
+        document.getElementByID("preAccidentForm").reset();
+        document.getElementByID("preEarningsAccident").value = '';
+        //for (i = 0; i < allForms.length; i++){
+            //document.getElementByID(allForms[i]).reset();
+        //}
+    }
+
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+
+</html>
