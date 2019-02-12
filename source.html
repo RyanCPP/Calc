@@ -77,6 +77,7 @@
                 <p style="text-align: center"><b>Result</b></p>
                 <p style="text-align: center" id="preResult"><b></b></p>
                 <p style="text-align: center" id="postResult"><b></b></p>
+                <p style="text-align: center" id="totalResult"><b></b></p>				
             </div>
         </div>
         <div class="row" style="height:200px; background-color: grey"></div>
@@ -180,6 +181,7 @@
             result += (income[i] - tax[i]) * discount[i] * survival[i];
             //result += income[i];
             //alert(age[i] + " " + year[i] + " " + income[i] + " " + tax[i] + " " + discount[i] + " " + survival[i]);
+			//alert(year[i] + " and " + income[i]);
         }
 
         document.getElementById("preResult").innerHTML = "Pre-Accident = R" + result;
@@ -195,6 +197,7 @@
         var postAccidentCeiling = parseFloat(document.getElementById("postEarningsCeiling").value);
         var postAccidentCeilingAge = parseFloat(document.getElementById("postAccidentCeilingAge").value);
         var postAccidentRetirementAge = parseFloat(document.getElementById("postAccidentRetirement").value);
+		var earningsAtCalc = parseFloat(document.getElementById("pastEarnings" + (yearCalc - yearAcc)).value);
         //var postPeriods = Math.ceil(postAccidentRetirementAge - (yearAcc - yearBirth));
         var postIncome = new Array();
         var postAge = new Array();
@@ -203,9 +206,17 @@
         var postDiscount = new Array();
         var postSurvival = new Array();
         var postResult = 0;
-        var postAnnualIncrease = (postAccidentCeiling - accidentEarnings) / (postAccidentCeilingAge - (yearAcc - yearBirth) - 1);
+        //var postAnnualIncrease = (postAccidentCeiling - accidentEarnings) / (postAccidentCeilingAge - (yearAcc - yearBirth) - 1);
+		var postAnnualIncrease = (postAccidentCeiling - earningsAtCalc) / (postAccidentCeilingAge - (yearCalc - yearBirth) - 1);
         var eliminationInidicator = 1;
 
+		//alert(earningsAtCalc);
+		//alert(postAccidentCeiling);
+		//alert(postAccidentCeilingAge);
+		//alert(yearCalc);
+		//alert(yearBirth);
+		//alert((postAccidentCeilingAge - (yearCalc - yearBirth) - 1));
+		alert(postAnnualIncrease);
 
         for (i = 0; i < periods; i++){
             postAge[i] = i + 1 + yearAcc - yearBirth;
@@ -223,14 +234,22 @@
                 postIncome[i] = accidentEarnings;
             }
             else {
-                if(postAge[i] > postAccidentCeilingAge){
-                    postIncome[i] = postIncome[i-1] * eliminationInidicator;
-                }
-                else {
-                    postIncome[i] = (accidentEarnings + postAnnualIncrease * i) * eliminationInidicator;
-                }
+				if(postYear[i] <= yearCalc){
+					postIncome[i] = parseFloat(document.getElementById("pastEarnings" + i).value) * eliminationInidicator;
+				}
+				else {
+					if(postAge[i] > postAccidentCeilingAge){
+						postIncome[i] = postIncome[i-1] * eliminationInidicator;
+					}
+					else {
+						postIncome[i] = (earningsAtCalc + postAnnualIncrease * (i - (yearCalc - yearAcc))) * eliminationInidicator;
+					}
+				}
+                
             }
-
+			
+			alert(postYear[i] + " and " + postIncome[i]);
+			
             postTax[i] = postIncome[i] * 0.1 * eliminationInidicator;
 
             postDiscount[i] = 1 / (Math.pow(discountRate,i+1));
@@ -243,7 +262,7 @@
             }
 
             postResult += (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i];
-            //postResult += postIncome[i];
+            
         }
 
         document.getElementById("postResult").innerHTML = "Post-Accident = R" + postResult;
@@ -251,6 +270,8 @@
 /*---------------------------------------------------------------------------------------------------------------*/
 // POST-ACCIDENT
 /*---------------------------------------------------------------------------------------------------------------*/
+
+		document.getElementById("totalResult").innerHTML = "Total Loss = R" + (result - postResult);
 
     }
 
@@ -262,13 +283,13 @@
 
     //Clear function not working.. FFS!
     function clearAll(){
-        alert("I am here");
-        document.getElementByID("generalAssumptionsForm").reset();
-        document.getElementByID("generalDetailsForm").reset();
-        document.getElementByID("preAccidentForm").reset();
-        document.getElementByID("preEarningsAccident").value = '';
+        document.getElementById("generalAssumptionsForm").reset();
+        document.getElementById("generalDetailsForm").reset();
+        document.getElementById("preAccidentForm").reset();
+		document.getElementById("postAccidentForm").reset();
+        document.getElementById("preEarningsAccident").value = '';
         //for (i = 0; i < allForms.length; i++){
-            //document.getElementByID(allForms[i]).reset();
+            //document.getElementById(allForms[i]).reset();
         //}
     }
 
