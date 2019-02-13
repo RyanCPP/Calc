@@ -80,12 +80,36 @@
             <input type="button" onclick="clearAll(1)" style="margin: auto" value="Clear All">
         </div>
         <div class="row" style="height:20px; background-color: white"></div>
-        <div class="row" style="height:120px; background-color: white">
+        <div class="row" style="height:500px; background-color: white">
             <div class="col-md-12">
                 <p style="text-align: center"><b>Result</b></p>
                 <p style="text-align: center" id="preResult"><b></b></p>
                 <p style="text-align: center" id="postResult"><b></b></p>
-                <p style="text-align: center" id="totalResult"><b></b></p>				
+                <p style="text-align: center" id="totalResult"><b></b></p>
+				<div class="row" style="height:50px"></div>
+				<div class="row" style="height:250px">
+					<div class="col-md-6" style="border: 1px solid black">
+						<form id="contingencies">
+						  Past Pre-Accident Contingency:<br>
+						  <input type="number" name="pastPreCon" id="pastPreCon" value="5">
+						  <br>
+						  Past Post-Accident Contingency:<br>
+						  <input type="number" name="pastPostCon" id="pastPostCon" value="5">
+						  <br>
+						  Future Pre-Accident Contingency:<br>
+						  <input type="number" name="futurePreCon" id="futurePreCon" value="15">
+						  <br>
+						  Future Post-Accident Contingency:<br>
+						  <input type="number" name="futurePostCon" id="futurePostCon" value="20">
+						</form>
+					</div>
+					<div class="col-md-6" style="border: 1px solid black">
+						<p style="text-align: center"><b>Contingency Result</b></p>
+						<p style="text-align: center" id="preResultCon"><b></b></p>
+						<p style="text-align: center" id="postResultCon"><b></b></p>
+						<p style="text-align: center" id="totalResultCon"><b></b></p>
+					</div>
+				</div>
             </div>
         </div>
         <div class="row" style="height:200px; background-color: grey"></div>
@@ -150,6 +174,8 @@
 		var yearAcc = dateAcc.getFullYear();
 		var yearCalc = dateCalc.getFullYear();
 		var discountRate = 1 + parseFloat(document.getElementById("discountRate").value)/100;
+		var futurePreCon = parseFloat(document.getElementById("futurePreCon").value)/100;
+		var futurePostCon = parseFloat(document.getElementById("futurePostCon").value)/100;
 		//var yearAcc = parseFloat(document.getElementById("yearAccident").value);
         //var yearCalc = parseFloat(document.getElementById("yearCalc").value);
         //var yearBirth = parseFloat(document.getElementById("yearBirth").value);
@@ -205,6 +231,7 @@
         }
 
         document.getElementById("preResult").innerHTML = "Pre-Accident = R" + result;
+		document.getElementById("preResultCon").innerHTML = "Pre-Accident = R" + (1 - futurePreCon) * result;
 
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// PRE-ACCIDENT
@@ -279,12 +306,14 @@
         }
 
         document.getElementById("postResult").innerHTML = "Post-Accident = R" + postResult;
+		document.getElementById("postResultCon").innerHTML = "Post-Accident = R" + (1 - futurePostCon) * postResult;
 
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// POST-ACCIDENT
 		/*---------------------------------------------------------------------------------------------------------------*/
 
 		document.getElementById("totalResult").innerHTML = "Total Loss = R" + (result - postResult);
+		document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + ((1 - futurePreCon) * result - (1 - futurePostCon) * postResult);
 
     }
 
