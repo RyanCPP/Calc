@@ -42,16 +42,16 @@
                 <p style="text-align:center"><em><b>Pre-Accident</b></em></p>
                 <form id="preAccidentForm" style="margin-left: 150px">
                   Pre-Accident Retirement Age:<br>
-                  <input type="number" name="preAccidentRetirement" id="preAccidentRetirement">
+                  <input type="number" name="preAccidentRetirement" id="preAccidentRetirement" value="65">
                   <br>
                   Ceiling Age:<br>
                   <input type="number" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
                   <br>
                   Earnings @ Accident:<br>
-                  <input type="number" name="preEarningsAccident" id="preEarningsAccident">
+                  <input type="number" name="preEarningsAccident" id="preEarningsAccident" value="200000">
                   <br>
                   Earnings @ Ceiling:<br>
-                  <input type="number" name="preEarningsCeiling" id="preEarningsCeiling">
+                  <input type="number" name="preEarningsCeiling" id="preEarningsCeiling" value="700000">
                 </form>
             </div>
             <div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
@@ -73,6 +73,22 @@
 					  <input type="number" name="postEarningsCeiling" id="postEarningsCeiling">
 					</form>
 				</div>	
+            <div class="col-md-6" style="background-color: white; border: 1px solid black">
+                <p style="text-align:center"><em><b>Post-Accident</b></em></p>
+                <form id="postAccidentForm">
+                  Post-Accident Retirement Age:<br>
+                  <input type="number" name="postAccidentRetirement" id="postAccidentRetirement" value="65">
+                  <br>
+                  Ceiling Age:<br>
+                  <input type="number" name="postAccidentCeilingAge" id="postAccidentCeilingAge" value="45">
+                  <br>
+                  Actual Earnings Since Accident:<br>
+                  <div id="postAccidentActuals"></div>
+                  <br>
+                  Earnings @ Ceiling:<br>
+                  <input type="number" name="postEarningsCeiling" id="postEarningsCeiling" value="350000">
+                </form>
+				<input type="button" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
             </div>
         </div>
 		<div class="row" style="margin: auto">
@@ -129,6 +145,16 @@
     var allForms = ["generalAssumptionsForm","generalDetailsForm","preAccidentForm","postAccidentForm"];
     var generalAssumptionsForm = ["generalAssumptionsForm"];
     var generalDetailsForm = ["generalDetailsForm"];
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+	function getDays(firstDay, secondDay){
+		var oneDay = 24*60*60*1000;
+		
+		return Math.round(Math.abs(firstDay.getTime() - secondDay.getTime()) / oneDay);
+	}
     
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -182,8 +208,16 @@
 		var yearAcc = dateAcc.getFullYear();
 		var yearCalc = dateCalc.getFullYear();
 		var discountRate = 1 + parseFloat(document.getElementById("discountRate").value)/100;
+		var pastPreCon = parseFloat(document.getElementById("pastPreCon").value)/100;
+		var pastPostCon = parseFloat(document.getElementById("pastPostCon").value)/100;
 		var futurePreCon = parseFloat(document.getElementById("futurePreCon").value)/100;
 		var futurePostCon = parseFloat(document.getElementById("futurePostCon").value)/100;
+		var eoyAcc = new Date(yearAcc,12,31);
+		var boyCalc = new Date(yearCalc,1,1);
+		var accidentPeriod = getDays(eoyAcc,dateAcc) / 365;
+		var calcPeriod1 = getDays(boyCalc,dateCalc) / 365;
+		var calcPeriod2 = 1 - calcPeriod1;
+		var cap = 100000;
 		//var yearAcc = parseFloat(document.getElementById("yearAccident").value);
         //var yearCalc = parseFloat(document.getElementById("yearCalc").value);
         //var yearBirth = parseFloat(document.getElementById("yearBirth").value);
@@ -195,31 +229,46 @@
         var preAccidentCeiling = parseFloat(document.getElementById("preEarningsCeiling").value);
         var preAccidentCeilingAge = parseFloat(document.getElementById("preAccidentCeilingAge").value);
         var preAccidentRetirementAge = parseFloat(document.getElementById("preAccidentRetirement").value);
-        var periods = Math.ceil(preAccidentRetirementAge - (yearAcc - yearBirth));
+		var preAccidentRetirementDate = new Date(yearAcc + Math.ceil(preAccidentRetirementAge - (yearAcc-yearBirth)),dateBirth.getMonth(),dateBirth.getDate());
+		var boyPreRetire = new Date(preAccidentRetirementDate.getFullYear(),1,1);
+        var periods = Math.ceil(preAccidentRetirementAge - (yearAcc - yearBirth) + 1);
         var income = new Array();
         var age = new Array();
         var year = new Array();
         var tax = new Array();
         var discount = new Array();
         var survival = new Array();
+		var preCapResults = new Array();
+		var contingency = new Array();
         var result = 0;
-        var annualIncrease = (preAccidentCeiling - accidentEarnings) / (preAccidentCeilingAge - (yearAcc - yearBirth) - 1);
-
+        var annualIncrease = (preAccidentCeiling - accidentEarnings) / (preAccidentCeilingAge - (yearAcc - yearBirth));
+		var preRetirePeriod = getDays(preAccidentRetirementDate,boyPreRetire) / 365;
+		var debugVariable1 = 0;
+		
+		
         for (i = 0; i < periods; i++){
-            age[i] = i + 1 + yearAcc - yearBirth;
+            age[i] = i + yearAcc - yearBirth;
             
             year[i] = yearAcc + i; 
+			
+			if(year[i] <= yearCalc){
+				contingency[i] = pastPreCon;
+			}
+			else {
+				contingency[i] = futurePreCon;
+			}
 
             if(i == 0){
-                income[i] = accidentEarnings;
+				income[i] = accidentEarnings;
             }
             else {
                 if(age[i] > preAccidentCeilingAge){
-                    income[i] = income[i-1];
-                }
-                else {
-                    income[i] = accidentEarnings + annualIncrease * i;
-                }
+					income[i] = income[i-1];
+				}
+				else {
+					income[i] = accidentEarnings + annualIncrease * i;
+				}
+				
             }
 
             tax[i] = income[i] * 0.1;
@@ -234,12 +283,12 @@
             }
 
             result += (income[i] - tax[i]) * discount[i] * survival[i];
-            //alert(age[i] + " " + year[i] + " " + income[i] + " " + tax[i] + " " + discount[i] + " " + survival[i]);
-			//alert(year[i] + " and " + income[i]);
+			preCapResults[i] = (income[i] - tax[i]) * discount[i] * survival[i];
+			//console.log("BF Year " + year[i] + " R" + income[i] + " discount = " + survival[i] * discount[i]);
+            
         }
 
         document.getElementById("preResult").innerHTML = "Pre-Accident = R" + result;
-		document.getElementById("preResultCon").innerHTML = "Pre-Accident = R" + (1 - futurePreCon) * result;
 
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// PRE-ACCIDENT
@@ -260,16 +309,25 @@
         var postTax = new Array();
         var postDiscount = new Array();
         var postSurvival = new Array();
+		var postCapResults = new Array();
+		var postContingency = new Array();
         var postResult = 0;
         //var postAnnualIncrease = (postAccidentCeiling - accidentEarnings) / (postAccidentCeilingAge - (yearAcc - yearBirth) - 1);
-		var postAnnualIncrease = (postAccidentCeiling - earningsAtCalc) / (postAccidentCeilingAge - (yearCalc - yearBirth) - 1);
+		var postAnnualIncrease = (postAccidentCeiling - earningsAtCalc) / (postAccidentCeilingAge - (yearCalc - yearBirth));
         var eliminationInidicator = 1;
 		
 
         for (i = 0; i < periods; i++){
-            postAge[i] = i + 1 + yearAcc - yearBirth;
+            postAge[i] = i + yearAcc - yearBirth;
             
-            postYear[i] = yearAcc + i; 
+            postYear[i] = yearAcc + i;
+			
+			if(postYear[i] <= yearCalc){
+				postContingency[i] = pastPostCon;
+			}
+			else {
+				postContingency[i] = futurePostCon;
+			}
 
             if(postAge[i] > postAccidentRetirementAge){
                 eliminationInidicator = 0;
@@ -278,25 +336,19 @@
                 eliminationInidicator = 1;
             }
 
-            if(i == 0){
-                postIncome[i] = accidentEarnings;
-            }
-            else {
-				if(postYear[i] <= yearCalc){
-					postIncome[i] = parseFloat(document.getElementById("pastEarnings" + i).value) * eliminationInidicator;
+		
+			if(postYear[i] <= yearCalc){
+				postIncome[i] = parseFloat(document.getElementById("pastEarnings" + i).value) * eliminationInidicator;
+			}
+			else {
+				if(postAge[i] > postAccidentCeilingAge){
+					postIncome[i] = postIncome[i-1] * eliminationInidicator;
 				}
 				else {
-					if(postAge[i] > postAccidentCeilingAge){
-						postIncome[i] = postIncome[i-1] * eliminationInidicator;
-					}
-					else {
-						postIncome[i] = (earningsAtCalc + postAnnualIncrease * (i - (yearCalc - yearAcc))) * eliminationInidicator;
-					}
+					postIncome[i] = (earningsAtCalc + postAnnualIncrease * (i - (yearCalc - yearAcc))) * eliminationInidicator;
 				}
-                
-            }
-			
-			//alert(postYear[i] + " and " + postIncome[i]);
+			}
+                			
 			
             postTax[i] = postIncome[i] * 0.1 * eliminationInidicator;
 
@@ -310,18 +362,50 @@
             }
 
             postResult += (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i];
+			postCapResults[i] = (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i];
+			//console.log("HRT Year " + postYear[i] + " R" + postIncome[i] + " discount = " + postSurvival[i] * postDiscount[i]);
             
         }
 
         document.getElementById("postResult").innerHTML = "Post-Accident = R" + postResult;
-		document.getElementById("postResultCon").innerHTML = "Post-Accident = R" + (1 - futurePostCon) * postResult;
+		
 
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// POST-ACCIDENT
 		/*---------------------------------------------------------------------------------------------------------------*/
+		
+		/*---------------------------------------------------------------------------------------------------------------*/
+		// Cap Calculation & Deduction
+		/*---------------------------------------------------------------------------------------------------------------*/
+		var contingencyDeduction = 0;
+		var preResultsPostContingency = 0;
+		var postResultsPostContingency = 0;
+		var capResult = 0;
+		
+		for(i = 0; i < periods; i++){
+			if(((preCapResults[i] * (1 - contingency[i])) - (postCapResults[i] * (1 - postContingency[i]))) > cap ){
+				contingencyDeduction += (preCapResults[i] * (1 - contingency[i])) - (postCapResults[i] * (1 - postContingency[i])) - cap;
+			}
+			else {
+				contingencyDeduction += 0;
+			}
+			preResultsPostContingency += preCapResults[i] * (1 - contingency[i]);
+			postResultsPostContingency += postCapResults[i] * (1 - postContingency[i]);
+			capResult += (preCapResults[i] * (1 - contingency[i])) - (postCapResults[i] * (1 - postContingency[i]));
+			//console.log(i + "    " + contingency[i] + "    " + postContingency[i] + "    " + contingencyDeduction);
+			console.log(preCapResults[i] + " .. " + contingency[i] + " .. " + postCapResults[i] + " .. " + postContingency[i] + " .. " + cap + " .... " );
+		}
+		
+		capResult = capResult - contingencyDeduction;
 
 		document.getElementById("totalResult").innerHTML = "Total Loss = R" + (result - postResult);
-		document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + ((1 - futurePreCon) * result - (1 - futurePostCon) * postResult);
+		document.getElementById("preResultCon").innerHTML = "Pre-Accident Post Contingency = R" + preResultsPostContingency;
+		document.getElementById("postResultCon").innerHTML = "Post-Accident Post Contingency = R" + postResultsPostContingency;
+		document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + capResult;
+		//document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + ((1 - futurePreCon) * result - (1 - futurePostCon) * postResult);
+		/*---------------------------------------------------------------------------------------------------------------*/
+		// Cap Calculation & Deduction
+		/*---------------------------------------------------------------------------------------------------------------*/
 
     }
 
