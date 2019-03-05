@@ -3,21 +3,20 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
 
-<body>
+<body style="background-color: rgb(105,105,105)">
     <div class="container">
-        <div class="row" style="height:200px; background-color: grey"></div>
-        <div class="row" style="height:400px; background-color: white; border: 2px solid black">
+        <div class="row" style="height:200px; background-color: rgb(105,105,105)"></div>
+        <div class="row" style="height:300px; background-color: rgb(47,79,79); border: 2px solid black">
             <div class="col-md-6">
-                <p style="text-align:center">General Assumptions</p>
+                <p style="text-align:center"><em><b>General Assumptions</em></b></p>
                 <form id="generalAssumptionsForm">
                   Discount Rate (%):<br>
                   <input type="number" name="discountRate" id="discountRate" value="2.5">
                   <br>
                 </form>
-
             </div>
             <div class="col-md-6">
-                <p style="text-align:center">General Details</p>
+                <p style="text-align:center"><em><b>General Details</em></b></p>
                 <form id="generalDetailsForm">
                   Date of Birth:<br>
                   <input type="date" name="dateBirth" id="dateBirth">
@@ -38,10 +37,10 @@
 
             </div>       
         </div>
-        <div class="row" style="height:500px; background-color: white" id="earningsSection">
-            <div class="col-md-6" style="background-color: white; border: 1px solid black">
+        <div class="row" style="height:400px; background-color: white" id="earningsSection">
+            <div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
                 <p style="text-align:center"><em><b>Pre-Accident</b></em></p>
-                <form id="preAccidentForm">
+                <form id="preAccidentForm" style="margin-left: 150px">
                   Pre-Accident Retirement Age:<br>
                   <input type="number" name="preAccidentRetirement" id="preAccidentRetirement">
                   <br>
@@ -54,30 +53,39 @@
                   Earnings @ Ceiling:<br>
                   <input type="number" name="preEarningsCeiling" id="preEarningsCeiling">
                 </form>
-				<input type="button" onclick="clearAll(3)" style="margin: auto" value="Clear Pre-Accident Details">
             </div>
-            <div class="col-md-6" style="background-color: white; border: 1px solid black">
-                <p style="text-align:center"><em><b>Post-Accident</b></em></p>
-                <form id="postAccidentForm">
-                  Post-Accident Retirement Age:<br>
-                  <input type="number" name="postAccidentRetirement" id="postAccidentRetirement">
-                  <br>
-                  Ceiling Age:<br>
-                  <input type="number" name="postAccidentCeilingAge" id="postAccidentCeilingAge" value="45">
-                  <br>
-                  Actual Earnings Since Accident:<br>
-                  <div id="postAccidentActuals"></div>
-                  <br>
-                  Earnings @ Ceiling:<br>
-                  <input type="number" name="postEarningsCeiling" id="postEarningsCeiling">
-                </form>
-				<input type="button" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
+            <div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
+                <div class="row" style="margin: auto">
+					<p style="text-align:center"><em><b>Post-Accident</b></em></p>
+				</div>
+				<div class="row">
+					<form id="postAccidentForm" style="margin-left: 150px">
+					  Post-Accident Retirement Age:<br>
+					  <input type="number" name="postAccidentRetirement" id="postAccidentRetirement">
+					  <br>
+					  Ceiling Age:<br>
+					  <input type="number" name="postAccidentCeilingAge" id="postAccidentCeilingAge" value="45">
+					  <br>
+					  Actual Earnings Since Accident:<br>
+					  <div id="postAccidentActuals"></div>
+					  <br>
+					  Earnings @ Ceiling:<br>
+					  <input type="number" name="postEarningsCeiling" id="postEarningsCeiling">
+					</form>
+				</div>	
             </div>
-
         </div>
+		<div class="row" style="margin: auto">
+				<input type="button" class="btn btn-secondary" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
+				<input type="button" class="btn btn-secondary" onclick="clearAll(3)" style="margin: auto" value="Clear Pre-Accident Details">
+		</div>
+		
+		<div class="row" style="height:50px; background-color: white"></div>
+		
+		
         <div class="row" style="height:50px; background-color: white">
-            <button onclick="calculate()" style="margin: auto">Calculate</button>
-            <input type="button" onclick="clearAll(1)" style="margin: auto" value="Clear All">
+            <button class="btn btn-secondary" onclick="calculate()" style="margin: auto">Calculate</button>
+            <input type="button" class="btn btn-secondary" onclick="clearAll(1)" style="margin: auto" value="Clear All">
         </div>
         <div class="row" style="height:20px; background-color: white"></div>
         <div class="row" style="height:500px; background-color: white">
@@ -112,7 +120,7 @@
 				</div>
             </div>
         </div>
-        <div class="row" style="height:200px; background-color: grey"></div>
+        <div class="row" style="height:200px; background-color: rgb(105,105,105)"></div>
     </div>
 
 </body>
@@ -157,7 +165,7 @@
             postEarningsText += (yearAcc + i) + " <input type=\"number\" name=\"pastEarnings" + i + "\" id=\"pastEarnings" + i + "\"><br>";
         }
         document.getElementById("postAccidentActuals").innerHTML = postEarningsText;
-        document.getElementById("earningsSection").style.height = (500 + pastPeriods*20) + "px";
+        document.getElementById("earningsSection").style.height = (400 + pastPeriods*20) + "px";
     }
 
 /*---------------------------------------------------------------------------------------------------------------*/
