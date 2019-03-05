@@ -34,7 +34,6 @@
                   <!--Year of Calculation:<br>
                   <input type="number" name="yearCalc" id="yearCalc" onchange="postEarningsSetup()">-->
                 </form>
-
             </div>       
         </div>
         <div class="row" style="height:400px; background-color: white" id="earningsSection">
@@ -48,13 +47,13 @@
                   <input type="number" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
                   <br>
                   Earnings @ Accident:<br>
-                  <input type="number" name="preEarningsAccident" id="preEarningsAccident" value="200000">
+                  <input type="number" name="preEarningsAccident" id="preEarningsAccident" value="200000"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-primary" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
                   <br>
                   Earnings @ Ceiling:<br>
                   <input type="number" name="preEarningsCeiling" id="preEarningsCeiling" value="700000">
                 </form>
             </div>
-            <div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
+			<div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center"><em><b>Post-Accident</b></em></p>
 				</div>
@@ -72,24 +71,8 @@
 					  Earnings @ Ceiling:<br>
 					  <input type="number" name="postEarningsCeiling" id="postEarningsCeiling">
 					</form>
-				</div>	
-            <div class="col-md-6" style="background-color: white; border: 1px solid black">
-                <p style="text-align:center"><em><b>Post-Accident</b></em></p>
-                <form id="postAccidentForm">
-                  Post-Accident Retirement Age:<br>
-                  <input type="number" name="postAccidentRetirement" id="postAccidentRetirement" value="65">
-                  <br>
-                  Ceiling Age:<br>
-                  <input type="number" name="postAccidentCeilingAge" id="postAccidentCeilingAge" value="45">
-                  <br>
-                  Actual Earnings Since Accident:<br>
-                  <div id="postAccidentActuals"></div>
-                  <br>
-                  Earnings @ Ceiling:<br>
-                  <input type="number" name="postEarningsCeiling" id="postEarningsCeiling" value="350000">
-                </form>
-				<input type="button" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
-            </div>
+				</div>
+			</div>
         </div>
 		<div class="row" style="margin: auto">
 				<input type="button" class="btn btn-secondary" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
@@ -145,6 +128,17 @@
     var allForms = ["generalAssumptionsForm","generalDetailsForm","preAccidentForm","postAccidentForm"];
     var generalAssumptionsForm = ["generalAssumptionsForm"];
     var generalDetailsForm = ["generalDetailsForm"];
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+	function paterson(idee){
+		var text1 = "<select class=\"form-control\" id=\"idee" + 'Select' + "\"><option>Unskilled</option><option>Semi-Skilled</option><option>Super-Skilled</option></select>";
+		document.getElementById(idee).innerHTML = text1;
+		document.getElementById('preEarningsAccident').value = 500000;
+	}
+
 
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
