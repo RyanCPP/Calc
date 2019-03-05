@@ -47,10 +47,10 @@
                   <input type="number" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
                   <br>
                   Earnings @ Accident:<br>
-                  <input type="number" name="preEarningsAccident" id="preEarningsAccident" value="200000"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-primary" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
+                  <input type="number" name="preEarningsAccident" id="preEarningsAccident" value="200000"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
                   <br>
                   Earnings @ Ceiling:<br>
-                  <input type="number" name="preEarningsCeiling" id="preEarningsCeiling" value="700000">
+                  <input type="number" name="preEarningsCeiling" id="preEarningsCeiling" value="700000"><div id="preEarningsCeilingPaterson"><button type="button" class="btn btn-info" onclick="paterson('preEarningsCeilingPaterson')">Paterson</button></div>
                 </form>
             </div>
 			<div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
@@ -75,8 +75,8 @@
 			</div>
         </div>
 		<div class="row" style="margin: auto">
-				<input type="button" class="btn btn-secondary" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
 				<input type="button" class="btn btn-secondary" onclick="clearAll(3)" style="margin: auto" value="Clear Pre-Accident Details">
+				<input type="button" class="btn btn-secondary" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
 		</div>
 		
 		<div class="row" style="height:50px; background-color: white"></div>
@@ -134,11 +134,31 @@
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
 	function paterson(idee){
-		var text1 = "<select class=\"form-control\" id=\"idee" + 'Select' + "\"><option>Unskilled</option><option>Semi-Skilled</option><option>Super-Skilled</option></select>";
+		var text1 = "<select class=\"form-control\" id=\"" + idee + 'Select' + "\" onchange=\"changeIncome('" + idee.substring(0,idee.length - 8) + "')\"><option disabled selected value> -- select an option -- </option><option>Unskilled</option><option>Semi-Skilled</option><option>Super-Skilled</option></select>";
 		document.getElementById(idee).innerHTML = text1;
-		document.getElementById('preEarningsAccident').value = 500000;
+		//alert(idee);
+		//document.getElementById('preEarningsAccident').value = document.getElementById('preEarningsAccidentSelect').value;
 	}
 
+	function changeIncome(id1){
+		var income;
+		var level = document.getElementById(id1 + 'PatersonSelect').value;
+		//alert(level);
+		//alert(id1);
+		if(level == 'Unskilled'){
+			income = 25000;
+		}
+		else if(level == 'Semi-Skilled'){
+			income = 150000;
+		}
+		else if(level == 'Super-Skilled'){
+			income = 3500000;
+		}
+		else
+			income - 0;
+			
+		document.getElementById(id1).value = income;
+	}
 
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -422,6 +442,8 @@
 		}
 		else if (num == 3) {
 			document.getElementById("preAccidentForm").reset();
+			document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
+			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
 		}
        
     }
