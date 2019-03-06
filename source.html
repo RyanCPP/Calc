@@ -14,6 +14,12 @@
 					  Discount Rate (%):<br>
 					  <input type="number" class="form-control" name="discountRate" id="discountRate" value="2.5">
 					  <br>
+					  Inflation Rate (%):<br>
+					  <input type="number" class="form-control" name="inflationRate" id="inflationRate" value="6">
+					  <br>
+					  Investment Rate (%):<br>
+					  <input type="number" class="form-control" name="investmentRate" id="investmentRate" value="8.65">
+					  <br>
 					</form>
 				</div>
             </div>
@@ -40,7 +46,7 @@
 				</div>
             </div>       
         </div>
-        <div class="row" style="height:400px; background-color: white" id="earningsSection">
+        <div class="row" style="height:500px; background-color: white" id="earningsSection">
             <div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center"><em><b>Pre-Accident</b></em></p>
@@ -54,10 +60,10 @@
 					  <input type="number" class="form-control" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
 					  <br>
 					  Earnings @ Accident:<br>
-					  <input type="number" class="form-control" name="preEarningsAccident" id="preEarningsAccident" value="200000"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
+					  <input type="number" class="form-control" name="preEarningsAccident" id="preEarningsAccident" value="200000"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
 					  <br>
 					  Earnings @ Ceiling:<br>
-					  <input type="number" class="form-control" name="preEarningsCeiling" id="preEarningsCeiling" value="700000"><div id="preEarningsCeilingPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsCeilingPaterson')">Paterson</button></div>
+					  <input type="number" class="form-control" name="preEarningsCeiling" id="preEarningsCeiling" value="700000"><div id="preEarningsCeilingPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsCeilingPaterson')">Paterson</button></div>
 					</form>
 				</div>
             </div>
@@ -77,7 +83,7 @@
 					  <div id="postAccidentActuals"></div>
 					  <br>
 					  Earnings @ Ceiling:<br>
-					  <input type="number" class="form-control" name="postEarningsCeiling" id="postEarningsCeiling"><div id="postEarningsCeilingPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('postEarningsCeilingPaterson')">Paterson</button></div>
+					  <input type="number" class="form-control" name="postEarningsCeiling" id="postEarningsCeiling"><div id="postEarningsCeilingPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('postEarningsCeilingPaterson')">Paterson</button></div>
 					</form>
 				</div>
 			</div>
@@ -95,7 +101,7 @@
             <input type="button" class="btn btn-secondary" onclick="clearAll(1)" style="margin: auto" value="Clear All">
         </div>
         <div class="row" style="height:20px; background-color: white"></div>
-        <div class="row" style="height:500px; background-color: white">
+        <div class="row" style="height:500px; background-color: white" id="resultsSection">
             <div class="col-md-12">
                 <p style="text-align: center"><b>Result</b></p>
                 <p style="text-align: center" id="preResult"><b></b></p>
@@ -103,7 +109,7 @@
                 <p style="text-align: center" id="totalResult"><b></b></p>
 				<div class="row" style="height:50px"></div>
 				<div class="row" style="height:250px">
-					<div class="col-md-6" style="border: 1px solid black">
+					<div class="col-md-6"> <!--style="border: 1px solid black"-->
 						<div class="row">
 							<form id="contingencies" style="margin-left: 150px">
 							  Past Pre-Accident Contingency:<br>
@@ -120,7 +126,7 @@
 							</form>
 						</div>
 					</div>
-					<div class="col-md-6" style="border: 1px solid black">
+					<div class="col-md-6"> <!--style="border: 1px solid black"-->
 						<p style="text-align: center"><b>Contingency Result</b></p>
 						<p style="text-align: center" id="preResultCon"><b></b></p>
 						<p style="text-align: center" id="postResultCon"><b></b></p>
@@ -213,10 +219,10 @@
         for (i = 0; i < pastPeriods; i++){
             postEarningsText += (yearAcc + i) + " <input type=\"number\" name=\"pastEarnings" + i + "\" id=\"pastEarnings" + i + "\"><br>";
         }
-		postEarningsText += "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to make earnings similar to pre-accident\" onclick=\"preEarnings(" + pastPeriods + "," + yearAcc + ")\">Pre-Accident</button>";
+		postEarningsText += "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to make earnings similar to pre-accident\" onclick=\"preEarnings(" + pastPeriods + "," + yearAcc + ")\">Pre-Accident</button>";
         document.getElementById("postAccidentActuals").innerHTML = postEarningsText;
 		postPastEarningsEmptyState = postEarningsText;
-        document.getElementById("earningsSection").style.height = (420 + pastPeriods*20) + "px";
+        document.getElementById("earningsSection").style.height = (520 + pastPeriods*25) + "px";
 		document.getElementById("actualEarningsHeading").innerHTML = "Actual Earnings Since Accident:<br>";
     }
 
@@ -264,6 +270,7 @@
         //var yearCalc = parseFloat(document.getElementById("yearCalc").value);
         //var yearBirth = parseFloat(document.getElementById("yearBirth").value);
 		
+		document.getElementById("resultsSection").style.height = "550px";
 		
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// PRE-ACCIDENT
@@ -330,7 +337,7 @@
             
         }
 
-        document.getElementById("preResult").innerHTML = "Pre-Accident = R" + result;
+        document.getElementById("preResult").innerHTML = "Pre-Accident =  R " + result.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// PRE-ACCIDENT
@@ -417,11 +424,11 @@
 
             postResult += (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i];
 			postCapResults[i] = (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i];
-			console.log("HRT Year " + postYear[i] + " indicator = " + preAccidentEqualiser + " R" + postIncome[i] + " income = " + income[i]);
+			//console.log("HRT Year " + postYear[i] + " indicator = " + preAccidentEqualiser + " R" + postIncome[i] + " income = " + income[i]);
             
         }
 
-        document.getElementById("postResult").innerHTML = "Post-Accident = R" + postResult;
+        document.getElementById("postResult").innerHTML = "Post-Accident =  R " + postResult.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 		
 
 		/*---------------------------------------------------------------------------------------------------------------*/
@@ -447,15 +454,15 @@
 			postResultsPostContingency += postCapResults[i] * (1 - postContingency[i]);
 			capResult += (preCapResults[i] * (1 - contingency[i])) - (postCapResults[i] * (1 - postContingency[i]));
 			//console.log(i + "    " + contingency[i] + "    " + postContingency[i] + "    " + contingencyDeduction);
-			console.log(preCapResults[i] + " .. " + contingency[i] + " .. " + postCapResults[i] + " .. " + postContingency[i] + " .. " + cap + " .... " );
+			//console.log(preCapResults[i] + " .. " + contingency[i] + " .. " + postCapResults[i] + " .. " + postContingency[i] + " .. " + cap + " .... " );
 		}
 		
 		capResult = capResult - contingencyDeduction;
 
-		document.getElementById("totalResult").innerHTML = "Total Loss = R" + (result - postResult);
-		document.getElementById("preResultCon").innerHTML = "Pre-Accident Post Contingency = R" + preResultsPostContingency;
-		document.getElementById("postResultCon").innerHTML = "Post-Accident Post Contingency = R" + postResultsPostContingency;
-		document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + capResult;
+		document.getElementById("totalResult").innerHTML = "Total Loss =  R " + (result - postResult).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+		document.getElementById("preResultCon").innerHTML = "Pre-Accident Post Contingency =  R " + preResultsPostContingency.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+		document.getElementById("postResultCon").innerHTML = "Post-Accident Post Contingency =  R " + postResultsPostContingency.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+		document.getElementById("totalResultCon").innerHTML = "Total Loss =  R " + capResult.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 		//document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + ((1 - futurePreCon) * result - (1 - futurePostCon) * postResult);
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// Cap Calculation & Deduction
@@ -477,22 +484,22 @@
 			document.getElementById("preAccidentForm").reset();
 			document.getElementById("postAccidentForm").reset();
 			document.getElementById("contingencies").reset();
-			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
-			document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
-			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
+			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
+			document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
+			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
 			document.getElementById("postAccidentActuals").innerHTML = postPastEarningsEmptyState;
 			preAccidentEqualiser = 0;
 		}
 		else if (num == 2) {
 			document.getElementById("postAccidentForm").reset();
-			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
+			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
 			document.getElementById("postAccidentActuals").innerHTML = postPastEarningsEmptyState;
 			preAccidentEqualiser = 0;
 		}
 		else if (num == 3) {
 			document.getElementById("preAccidentForm").reset();
-			document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
-			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
+			document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
+			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
 		}
        
     }
