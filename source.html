@@ -9,49 +9,57 @@
         <div class="row" style="height:300px; background-color: rgb(47,79,79); border: 2px solid black">
             <div class="col-md-6">
                 <p style="text-align:center"><em><b>General Assumptions</em></b></p>
-                <form id="generalAssumptionsForm">
-                  Discount Rate (%):<br>
-                  <input type="number" name="discountRate" id="discountRate" value="2.5">
-                  <br>
-                </form>
+				<div class="row">	
+					<form id="generalAssumptionsForm" style="margin-left: 150px">
+					  Discount Rate (%):<br>
+					  <input type="number" class="form-control" name="discountRate" id="discountRate" value="2.5">
+					  <br>
+					</form>
+				</div>
             </div>
             <div class="col-md-6">
                 <p style="text-align:center"><em><b>General Details</em></b></p>
-                <form id="generalDetailsForm">
-                  Date of Birth:<br>
-                  <input type="date" name="dateBirth" id="dateBirth">
-                  <br>
-				  <!--Year of Birth:<br>
-                  <input type="number" name="yearBirth" id="yearBirth">
-                  <br>-->
-				  Date of Accident:<br>
-                  <input type="date" name="dateAccident" id="dateAccident" onchange="calcYear()">
-                  <br>
-                  <!--Year of Accident:<br>
-                  <input type="number" name="yearAccident" id="yearAccident">
-                  <br>-->
-                  <div id="calcYearDiv"></div>
-                  <!--Year of Calculation:<br>
-                  <input type="number" name="yearCalc" id="yearCalc" onchange="postEarningsSetup()">-->
-                </form>
+				<div class="row">	
+					<form id="generalDetailsForm" style="margin-left: 150px">
+					  Date of Birth:<br>
+					  <input type="date" class="form-control" name="dateBirth" id="dateBirth">
+					  <br>
+					  <!--Year of Birth:<br>
+					  <input type="number" name="yearBirth" id="yearBirth">
+					  <br>-->
+					  Date of Accident:<br>
+					  <input type="date" class="form-control" name="dateAccident" id="dateAccident" onchange="calcYear()">
+					  <br>
+					  <!--Year of Accident:<br>
+					  <input type="number" name="yearAccident" id="yearAccident">
+					  <br>-->
+					  <div id="calcYearDiv"></div>
+					  <!--Year of Calculation:<br>
+					  <input type="number" name="yearCalc" id="yearCalc" onchange="postEarningsSetup()">-->
+					</form>
+				</div>
             </div>       
         </div>
         <div class="row" style="height:400px; background-color: white" id="earningsSection">
             <div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
-                <p style="text-align:center"><em><b>Pre-Accident</b></em></p>
-                <form id="preAccidentForm" style="margin-left: 150px">
-                  Pre-Accident Retirement Age:<br>
-                  <input type="number" name="preAccidentRetirement" id="preAccidentRetirement" value="65">
-                  <br>
-                  Ceiling Age:<br>
-                  <input type="number" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
-                  <br>
-                  Earnings @ Accident:<br>
-                  <input type="number" name="preEarningsAccident" id="preEarningsAccident" value="200000"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
-                  <br>
-                  Earnings @ Ceiling:<br>
-                  <input type="number" name="preEarningsCeiling" id="preEarningsCeiling" value="700000"><div id="preEarningsCeilingPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsCeilingPaterson')">Paterson</button></div>
-                </form>
+                <div class="row" style="margin: auto">
+					<p style="text-align:center"><em><b>Pre-Accident</b></em></p>
+				</div>
+				<div class="row">
+					<form id="preAccidentForm" style="margin-left: 150px">
+					  Pre-Accident Retirement Age:<br>
+					  <input type="number" class="form-control" name="preAccidentRetirement" id="preAccidentRetirement" value="65">
+					  <br>
+					  Ceiling Age:<br>
+					  <input type="number" class="form-control" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
+					  <br>
+					  Earnings @ Accident:<br>
+					  <input type="number" class="form-control" name="preEarningsAccident" id="preEarningsAccident" value="200000"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
+					  <br>
+					  Earnings @ Ceiling:<br>
+					  <input type="number" class="form-control" name="preEarningsCeiling" id="preEarningsCeiling" value="700000"><div id="preEarningsCeilingPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsCeilingPaterson')">Paterson</button></div>
+					</form>
+				</div>
             </div>
 			<div class="col-md-6" style="background-color: rgb(0,139,139); border: 1px solid black">
                 <div class="row" style="margin: auto">
@@ -60,16 +68,16 @@
 				<div class="row">
 					<form id="postAccidentForm" style="margin-left: 150px">
 					  Post-Accident Retirement Age:<br>
-					  <input type="number" name="postAccidentRetirement" id="postAccidentRetirement">
+					  <input type="number" class="form-control" name="postAccidentRetirement" id="postAccidentRetirement">
 					  <br>
 					  Ceiling Age:<br>
-					  <input type="number" name="postAccidentCeilingAge" id="postAccidentCeilingAge" value="45">
+					  <input type="number" class="form-control" name="postAccidentCeilingAge" id="postAccidentCeilingAge" value="45">
 					  <br>
-					  Actual Earnings Since Accident:<br>
+					  <div id="actualEarningsHeading"></div><!--Actual Earnings Since Accident:<br>-->
 					  <div id="postAccidentActuals"></div>
 					  <br>
 					  Earnings @ Ceiling:<br>
-					  <input type="number" name="postEarningsCeiling" id="postEarningsCeiling"><div id="postEarningsCeilingPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('postEarningsCeilingPaterson')">Paterson</button></div>
+					  <input type="number" class="form-control" name="postEarningsCeiling" id="postEarningsCeiling"><div id="postEarningsCeilingPaterson"><button type="button" class="btn btn-info" title="Use this option if you would like to get Paterson values" onclick="paterson('postEarningsCeilingPaterson')">Paterson</button></div>
 					</form>
 				</div>
 			</div>
@@ -96,19 +104,21 @@
 				<div class="row" style="height:50px"></div>
 				<div class="row" style="height:250px">
 					<div class="col-md-6" style="border: 1px solid black">
-						<form id="contingencies">
-						  Past Pre-Accident Contingency:<br>
-						  <input type="number" name="pastPreCon" id="pastPreCon" value="5">
-						  <br>
-						  Past Post-Accident Contingency:<br>
-						  <input type="number" name="pastPostCon" id="pastPostCon" value="5">
-						  <br>
-						  Future Pre-Accident Contingency:<br>
-						  <input type="number" name="futurePreCon" id="futurePreCon" value="15">
-						  <br>
-						  Future Post-Accident Contingency:<br>
-						  <input type="number" name="futurePostCon" id="futurePostCon" value="20">
-						</form>
+						<div class="row">
+							<form id="contingencies" style="margin-left: 150px">
+							  Past Pre-Accident Contingency:<br>
+							  <input type="number" class="form-control" name="pastPreCon" id="pastPreCon" value="5">
+							  <br>
+							  Past Post-Accident Contingency:<br>
+							  <input type="number" class="form-control" name="pastPostCon" id="pastPostCon" value="5">
+							  <br>
+							  Future Pre-Accident Contingency:<br>
+							  <input type="number" class="form-control" name="futurePreCon" id="futurePreCon" value="15">
+							  <br>
+							  Future Post-Accident Contingency:<br>
+							  <input type="number" class="form-control" name="futurePostCon" id="futurePostCon" value="20">
+							</form>
+						</div>
 					</div>
 					<div class="col-md-6" style="border: 1px solid black">
 						<p style="text-align: center"><b>Contingency Result</b></p>
@@ -177,7 +187,7 @@
     function calcYear(){
         var calcDateText = "";
         //calcYearText = "Year of Calculation:<br><input type=\"number\" name=\"yearCalc\" id=\"yearCalc\" onchange=\"postEarningsSetup()\">";
-		calcDateText = "Date of Calculation:<br><input type=\"date\" name=\"dateCalculation\" id=\"dateCalculation\" onchange=\"postEarningsSetup()\">";
+		calcDateText = "Date of Calculation:<br><input type=\"date\" class=\"form-control\" name=\"dateCalculation\" id=\"dateCalculation\" onchange=\"postEarningsSetup()\">";
         document.getElementById("calcYearDiv").innerHTML = calcDateText;
     }
 
@@ -207,6 +217,7 @@
         document.getElementById("postAccidentActuals").innerHTML = postEarningsText;
 		postPastEarningsEmptyState = postEarningsText;
         document.getElementById("earningsSection").style.height = (420 + pastPeriods*20) + "px";
+		document.getElementById("actualEarningsHeading").innerHTML = "Actual Earnings Since Accident:<br>";
     }
 
 
@@ -465,6 +476,7 @@
 			document.getElementById("generalDetailsForm").reset();
 			document.getElementById("preAccidentForm").reset();
 			document.getElementById("postAccidentForm").reset();
+			document.getElementById("contingencies").reset();
 			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
 			document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
 			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
