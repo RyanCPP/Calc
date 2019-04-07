@@ -310,6 +310,7 @@
 		var boyCalc = new Date(yearCalc,1,1);
 		var accidentPeriod = getDays(eoyAcc,dateAcc) / 365;
 		var calcPeriod1 = getDays(boyCalc,dateCalc) / 365;
+		var periodMultiplier = 1;
 		var calcPeriod2 = 1 - calcPeriod1;
 		var cap = 100000;
 		var errorMessage = "";
@@ -448,22 +449,33 @@
 			}
 			
 
-			tax[i] = income[i] * 0.1;
-
-			discount[i] = 1 / (Math.pow(discountRate,i+1));
+			tax[i] = income[i] * 0;
 			
 			if(year[i] < yearCalc){
 				survival[i] = 1;
+				discount[i] = 1 / (Math.pow(inflation,yearCalc-year[i]));
 			}            
 			else {
+				discount[i] = 1 / (Math.pow(discountRate,year[i]-yearCalc+2));
 				survival[i] = survival[i-1] * life2M[ages.indexOf(age[i])];
 				//console.log(survival[i-1] + "   " + life2M[ages.indexOf(age[i])] + "    " + (survival[i-1] * life2M[ages.indexOf(age[i])]));
 				//survival[i] = 0.99;
 			}
 
-			result += (income[i] - tax[i]) * discount[i] * survival[i];
-			preCapResults[i] = (income[i] - tax[i]) * discount[i] * survival[i];
-			//console.log("BF Year " + year[i] + " R" + income[i] + " discount = " + survival[i] * discount[i]);
+			if(year[i] == yearAcc){
+				periodMultiplier = accidentPeriod;
+			}
+			else if(periods - i == 1){
+				periodMultiplier = 0.5;
+			}
+			else{
+				periodMultiplier = 1;
+			}
+
+			result += (income[i] - tax[i]) * discount[i] * survival[i] * periodMultiplier;
+			preCapResults[i] = (income[i] - tax[i]) * discount[i] * survival[i] * periodMultiplier;
+			//console.log("BF Year " + year[i] + " R" + income[i] + " discount = " + discount[i] + " tax = R" tax[i]);
+			console.log("BF Year " + year[i] + " income = " + income[i] + " discount = " + discount[i] + " tax = R " + tax[i] + " survival = " + survival[i] + " multiplier = " + periodMultiplier + " NPV = " + ((income[i] - tax[i]) * discount[i] * survival[i] * periodMultiplier));
 			
 		}
 
@@ -572,21 +584,31 @@
 			}
 							
 			
-			postTax[i] = postIncome[i] * 0.1 * eliminationInidicator;
-
-			postDiscount[i] = 1 / (Math.pow(discountRate,i+1));
+			postTax[i] = postIncome[i] * 0 * eliminationInidicator;
 			
 			if(postYear[i] < yearCalc){
 				postSurvival[i] = 1;
+				postDiscount[i] = 1 / (Math.pow(inflation,yearCalc-postYear[i]));
 			}            
 			else {
+				postDiscount[i] = 1 / (Math.pow(discountRate,postYear[i]-yearCalc+2));
 				postSurvival[i] = survival[i-1] * life2M[ages.indexOf(age[i])];
 				//postSurvival[i] = 0.99;
 			}
+			
+			if(postYear[i] == yearAcc){
+				periodMultiplier = accidentPeriod;
+			}
+			else if(periods - i == 1){
+				periodMultiplier = 0.5;
+			}
+			else{
+				periodMultiplier = 1;
+			}
 
-			postResult += (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i];
-			postCapResults[i] = (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i];
-			//console.log("HRT Year " + postYear[i] + " indicator = " + preAccidentEqualiser + " R" + postIncome[i] + " income = " + income[i]);
+			postResult += (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i] * periodMultiplier;
+			postCapResults[i] = (postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i] * periodMultiplier;
+			console.log("HRT Year " + postYear[i] + " indicator = " + preAccidentEqualiser + " R" + postIncome[i] + " multiplier = " + periodMultiplier + " discount = " + postDiscount[i] + " tax = R " + postTax[i] + " NPV = " + ((postIncome[i] - postTax[i]) * postDiscount[i] * postSurvival[i] * periodMultiplier));
 			
 		}
 
