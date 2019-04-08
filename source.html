@@ -168,6 +168,9 @@
 	var life5M = [1,0.94887,0.988660196,0.996386351,0.998545019,0.998553613,0.998905591,0.998979581,0.999000043,0.999160487,0.999493715,0.999590455,0.999568724,0.999428313,0.999201338,0.998898262,0.998529396,0.998115721,0.997678178,0.997226904,0.996782988,0.996356873,0.995959241,0.995590051,0.995282601,0.995015465,0.994800403,0.994638341,0.994530332,0.994420708,0.994377978,0.994334701,0.994267751,0.994164962,0.993978721,0.993706993,0.993347538,0.992933578,0.992475248,0.99199497,0.99151592,0.991025326,0.990485051,0.989892664,0.989220102,0.988437532,0.98757764,0.986609015,0.985537464,0.984381948,0.983148528,0.981815397,0.980400777,0.978924072,0.977376836,0.97577975,0.974093987,0.972339309,0.970472763,0.968512432,0.966444472,0.964234904,0.961899781,0.95941984,0.956812984,0.954059942,0.951138404,0.9480689,0.944855562,0.941481057,0.937954288];
 	var life5F = [1,0.95459,0.989241454,0.99713021,0.998736207,0.999096149,0.999095331,0.999105164,0.999232311,0.999359768,0.999498163,0.99952996,0.999519051,0.999497434,0.99944369,0.99936845,0.999282363,0.99918538,0.999066714,0.998936993,0.998806875,0.998676309,0.998534467,0.998402814,0.998270551,0.998137621,0.99800397,0.997880412,0.997766982,0.997641896,0.997526892,0.99741106,0.997272357,0.997121525,0.996925187,0.996682717,0.996415651,0.996101125,0.995749406,0.995382103,0.994975955,0.994552547,0.99409962,0.993615993,0.993111911,0.992574546,0.992013999,0.991428808,0.990817362,0.990189934,0.989532874,0.988844063,0.988108713,0.987323607,0.986472358,0.985550142,0.984551427,0.983469863,0.982325216,0.981083429,0.979777113,0.978398692,0.976983522,0.97554095,0.974112472,0.972682341,0.971168363,0.969409759,0.967340886,0.964794381,0.961717538];
 	var gend = 0;
+	var malLT = 250000;
+	var femLT = 100000;
+	var yearLT = 2011;
 	
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -310,11 +313,69 @@
 			document.getElementById("femaleButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setGender(1)\">Female</button>";
 		}
 		else if(gender == 1){
-			gend = 0;
+			gend = 1;
 			document.getElementById("femaleButton").innerHTML = "<button class=\"btn btn-dark\" onclick=\"setGender(1)\">Female</button>";
 			document.getElementById("maleButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setGender(0)\">Male</button>";
 		}
 	}
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
+	function taxCalc(earnings1){
+		var rebate = 14220;
+		var rate = 0;
+		var base = 0;
+		var calc1 = 0;
+		var bound = 0;
+		
+		if(earnings1 <= 195850){
+			bound = 0;
+			rate = 0.18;
+			base = 0;
+		}
+		else if(earnings1 > 195850 && earnings1 <= 305850){
+			bound = 195850;
+			rate = 0.26;
+			base = 35253;
+		}
+		else if(earnings1 > 305850 && earnings1 <= 423300){
+			bound = 305850;
+			rate = 0.31;
+			base = 63853;
+		}
+		else if(earnings1 > 423300 && earnings1 <= 555600){
+			bound = 423300;
+			rate = 0.36;
+			base = 100263;
+		}
+		else if(earnings1 > 555600 && earnings1 <= 708310){
+			bound = 555600;
+			rate = 0.39;
+			base = 147891;
+		}
+		else if(earnings1 > 708310 && earnings1 <= 1500000){
+			bound = 708310;
+			rate = 0.41;
+			base = 207448;
+		}
+		else if(earnings1 > 1500000){
+			bound = 1500000;
+			rate = 0.45;
+			base = 532041;
+		}
+		
+		calc1 = (earnings1 - bound) * rate + base - rebate;
+		
+		if(calc1 < 0)
+			return 0;
+		else
+			return calc1;
+		
+	}
+
 
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -407,6 +468,7 @@
 		var preRetirePeriod = getDays(preAccidentRetirementDate,boyPreRetire) / 365;
 		var debugVariable1 = 0;
 		var initialEarningsPre = 0;
+		var lifeTable = new Array();
 		
 		if(isNaN(accidentEarnings))
 		{
@@ -447,7 +509,20 @@
 		if(errorVariable == 1){
 			return;
 		}
-				
+		
+		if(gend == 0 && preAccidentCeiling >= Math.pow(malLT,yearCalc-yearLT)){
+			lifeTable = life2M.slice(0);
+		}
+		else if(gend == 0 && preAccidentCeiling < Math.pow(malLT,yearCalc-yearLT)){
+			lifeTable = life5M.slice(0);
+		}
+		else if(gend == 1 && preAccidentCeiling < Math.pow(femLT,yearCalc-yearLT)){
+			lifeTable = life5F.slice(0);
+		}
+		else if(gend == 1 && preAccidentCeiling < Math.pow(femLT,yearCalc-yearLT)){
+			lifeTable = life5F.slice(0);
+		}
+		
 		for (i = 0; i < periods; i++){
 			age[i] = i + yearAcc - yearBirth;
 			
@@ -479,7 +554,7 @@
 			}
 			
 
-			tax[i] = income[i] * 0;
+			tax[i] = taxCalc(income[i]);
 			
 			if(year[i] < yearCalc){
 				survival[i] = 1;
@@ -487,8 +562,8 @@
 			}            
 			else {
 				discount[i] = 1 / (Math.pow(discountRate,year[i]-yearCalc+2));
-				survival[i] = survival[i-1] * life2M[ages.indexOf(age[i])];
-				//console.log(survival[i-1] + "   " + life2M[ages.indexOf(age[i])] + "    " + (survival[i-1] * life2M[ages.indexOf(age[i])]));
+				survival[i] = survival[i-1] * lifeTable[ages.indexOf(age[i])];
+				//console.log(survival[i-1] + "   " + lifeTable[ages.indexOf(age[i])] + "    " + (survival[i-1] * lifeTable[ages.indexOf(age[i])]));
 				//survival[i] = 0.99;
 			}
 
@@ -614,7 +689,7 @@
 			}
 							
 			
-			postTax[i] = postIncome[i] * 0 * eliminationInidicator;
+			postTax[i] = taxCalc(postIncome[i]) * eliminationInidicator;
 			
 			if(postYear[i] < yearCalc){
 				postSurvival[i] = 1;
@@ -622,7 +697,7 @@
 			}            
 			else {
 				postDiscount[i] = 1 / (Math.pow(discountRate,postYear[i]-yearCalc+2));
-				postSurvival[i] = survival[i-1] * life2M[ages.indexOf(age[i])];
+				postSurvival[i] = survival[i-1] * lifeTable[ages.indexOf(age[i])];
 				//postSurvival[i] = 0.99;
 			}
 			
