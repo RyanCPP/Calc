@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exchange Capital Road Accident Fund Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  </head>
 
 <body style="background-color: rgb(254,254,254)">
     <div class="container">
@@ -64,7 +70,11 @@
 				</div>
             </div>       
         </div>
+	</div>
+	<div class="container">
 		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
+	</div>
+	<div class="container">
         <div class="row" style="height:500px; background-color: white" id="earningsSection">
             <div class="col-md-6" style="background-color: rgb(105,105,105); border: 1px solid black">
                 <div class="row" style="margin: auto">
@@ -110,7 +120,11 @@
 				</div>
 			</div>
         </div>
+	</div>
+	<div class="container">
 		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
+	</div>
+	<div class="container">
 		<div class="row" style="margin: auto">
 				<input type="button" class="btn btn-secondary" onclick="clearAll(3)" style="margin: auto" value="Clear Pre-Accident Details">
 				<input type="button" class="btn btn-secondary" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
@@ -123,9 +137,13 @@
             <button class="btn btn-primary" onclick="calculate()" style="margin: auto">Calculate</button>
             <input type="button" class="btn btn-secondary" onclick="clearAll(1)" style="margin: auto" value="Clear All">
         </div>
-		
+	</div>
+	
+	<div class="container">
         <div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
-        <div class="row" style="height:500px; background-color: rgb(105,105,105); border: 1px solid black" id="resultsSection">
+    </div>
+	<div class="container">
+		<div class="row" style="height:500px; background-color: rgb(105,105,105); border: 1px solid black" id="resultsSection">
             <div class="col-md-12">
                 <p style="text-align: center; color: rgb(0,11,127)"><b>Results</b></p>
                 <p style="text-align: center" id="preResult"></p>
@@ -159,6 +177,8 @@
 				</div>
             </div>
         </div>
+	</div>
+	<div class="container">
         <div class="row" style="height:200px; background-color: rgb(254,254,254)"></div>
 		<div class="row" style="height:20px; background-color: rgb(254,254,254)">
 			<div class="col-md-12" style="text-align: center; color: rgb(0,11,127)">
