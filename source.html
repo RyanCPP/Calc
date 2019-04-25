@@ -66,6 +66,16 @@
 					  <div id="calcYearDiv"></div>
 					  <!--Year of Calculation:<br>
 					  <input type="number" name="yearCalc" id="yearCalc" onchange="postEarningsSetup()">-->
+					  <br>
+					  <div class="row">
+						  <div class="col-md-6" id="capButton">
+							<button class="btn btn-light" onclick="setCap(1)">Cap</button>
+						  </div>
+						  <div class="col-md-6" id="noCapButton">
+							<button class="btn btn-light" onclick="setCap(0)">No Cap</button>
+						  </div>
+					  </div>
+					  <br>
 					</form>
 				</div>
             </div>       
@@ -89,11 +99,11 @@
 					  <input type="number" class="form-control" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
 					  <br>
 					  Earnings @ Accident:<br>
-					  <input type="number" class="form-control" name="preEarningsAccident" id="preEarningsAccident" value="200000" onchange="earningsStartSetup('preEarningsAccident','earningsStartPre','Pre')"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
+					  <input type="number" class="form-control" name="preEarningsAccident" id="preEarningsAccident" onchange="earningsStartSetup('preEarningsAccident','earningsStartPre','Pre')"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
 					  <div id="earningsStartPre"></div>
 					  <br>
 					  Earnings @ Ceiling:<br>
-					  <input type="number" class="form-control" name="preEarningsCeiling" id="preEarningsCeiling" value="700000"><div id="preEarningsCeilingPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsCeilingPaterson')">Paterson</button></div>
+					  <input type="number" class="form-control" name="preEarningsCeiling" id="preEarningsCeiling"><div id="preEarningsCeilingPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsCeilingPaterson')">Paterson</button></div>
 					</form>
 				</div>
             </div>
@@ -105,17 +115,19 @@
 				<div class="row">
 					<form id="postAccidentForm" style="margin: auto">
 					  Post-Accident Retirement Age:<br>
-					  <input type="number" class="form-control" name="postAccidentRetirement" id="postAccidentRetirement">
+					  <input type="number" class="form-control" name="postAccidentRetirement" id="postAccidentRetirement"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if the claimant is unemployable from the calculation date" onclick="unemployable()">Unemployable</button>
+					  <br>
 					  <br>
 					  Ceiling Age:<br>
 					  <input type="number" class="form-control" name="postAccidentCeilingAge" id="postAccidentCeilingAge" value="45">
 					  <br>
 					  <div id="actualEarningsHeading"></div><!--Actual Earnings Since Accident:<br>-->
 					  <div id="earningsStartPost"></div>
-					  <br>
+					  <!--<br>-->
 					  <div id="postAccidentActuals"></div>
+					  <br>
 					  Earnings @ Ceiling:<br>
-					  <input type="number" class="form-control" name="postEarningsCeiling" id="postEarningsCeiling"><div id="postEarningsCeilingPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('postEarningsCeilingPaterson')">Paterson</button></div>
+					  <input type="number" class="form-control" name="postEarningsCeiling" id="postEarningsCeiling"><div id="postEarningsCeilingPaterson"><button type="button" class="btn btn-info" style="width: 100%" id="postCeilingPatersonButton" title="Use this option if you would like to get Paterson values" onclick="paterson('postEarningsCeilingPaterson')">Paterson</button></div>
 					</form>
 				</div>
 			</div>
@@ -204,6 +216,8 @@
 	var capDates = ['1950-01-01','2008-07-31','2008-12-31','2009-01-31','2009-04-30','2009-07-31','2009-10-31','2010-01-31','2010-04-30','2010-07-31','2010-10-31','2011-01-31','2011-04-30','2011-07-31','2011-10-31','2012-01-31','2012-04-30','2012-07-31','2012-10-31','2013-01-31','2013-04-30','2013-07-31','2013-10-31','2014-01-31','2014-04-30','2014-07-31','2014-10-31','2015-01-31','2015-04-30','2015-07-31','2015-10-31','2016-01-31','2016-04-30','2016-07-31','2016-10-31','2017-01-31','2017-04-30','2017-07-31','2017-10-31','2018-01-31','2018-04-30','2018-07-31','2018-10-31','2019-01-31'];
 	var capLevels = [10000000,160000,166667,167071,169078,172806,175887,176535,178642,180750,182047,182857,185289,189017,191773,194043,196636,199716,201337,204904,207528,210192,213675,215320,219820,224120,227400,227810,228430,234366,237850,238670,244405,248710,251990,254450,259810,262366,263900,266200,270285,273863,276928,279994];
 	var gend = 0;
+	var capIndicator = 1;
+	var unemployableVar = 1;
 	var malLT = 250000;
 	var femLT = 100000;
 	var yearLT = 2011;
@@ -298,8 +312,42 @@
         document.getElementById("postAccidentActuals").innerHTML = postEarningsText;
 		postPastEarningsEmptyState = postEarningsText;
         document.getElementById("earningsSection").style.height = (520 + pastPeriods*26) + "px";
-		document.getElementById("actualEarningsHeading").innerHTML = "Actual Earnings Since Accident:<br>";
+		document.getElementById("actualEarningsHeading").innerHTML = "Actual Earnings Since Accident:";
     }
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
+	function unemployable(){
+		unemployableVar = 1 - unemployableVar;
+		if(unemployableVar == 0){
+			document.getElementById("postAccidentCeilingAge").style.backgroundColor = "grey";
+			document.getElementById("postAccidentRetirement").style.backgroundColor = "grey";
+			document.getElementById("postEarningsCeiling").style.backgroundColor = "grey";
+			document.getElementById("postAccidentCeilingAge").readOnly = true;
+			document.getElementById("postAccidentRetirement").readOnly = true;
+			document.getElementById("postEarningsCeiling").readOnly = true;
+			document.getElementById("postAccidentCeilingAge").value = "";
+			document.getElementById("postAccidentRetirement").value = "";
+			document.getElementById("postEarningsCeiling").value = "";
+			document.getElementById("postCeilingPatersonButton").disabled = true;
+		}
+		else {
+			document.getElementById("postAccidentCeilingAge").style.backgroundColor = "white";
+			document.getElementById("postAccidentRetirement").style.backgroundColor = "white";
+			document.getElementById("postEarningsCeiling").style.backgroundColor = "white";
+			document.getElementById("postAccidentCeilingAge").readOnly = false;
+			document.getElementById("postAccidentRetirement").readOnly = false;
+			document.getElementById("postEarningsCeiling").readOnly = false;
+			document.getElementById("postAccidentCeilingAge").value = "45";
+			document.getElementById("postAccidentRetirement").value = "";
+			document.getElementById("postEarningsCeiling").value = "";
+			document.getElementById("postCeilingPatersonButton").disabled = false;
+		}
+		
+	}
 
 
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -344,6 +392,24 @@
 			gend = 1;
 			document.getElementById("femaleButton").innerHTML = "<button class=\"btn btn-dark\" onclick=\"setGender(1)\">Female</button>";
 			document.getElementById("maleButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setGender(0)\">Male</button>";
+		}
+	}
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
+	function setCap(cap1){
+		if(cap1 == 1){
+			capIndicator = 1;
+			document.getElementById("capButton").innerHTML = "<button class=\"btn btn-dark\" onclick=\"setCap(1)\">Cap</button>";
+			document.getElementById("noCapButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setCap(0)\">No Cap</button>";
+		}
+		else if(cap1 == 0){
+			capIndicator = 0;
+			document.getElementById("noCapButton").innerHTML = "<button class=\"btn btn-dark\" onclick=\"setCap(0)\">No Cap</button>";
+			document.getElementById("capButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setCap(1)\">Cap</button>";
 		}
 	}
 
@@ -471,7 +537,7 @@
 		document.getElementById("resultsSection").style.height = "550px";
 		
 		/*---------------------------------------------------------------------------------------------------------------*/
-		// PRE-ACCIDENT
+		// START PRE-ACCIDENT
 		/*---------------------------------------------------------------------------------------------------------------*/
         var preAccidentCeiling = parseFloat(document.getElementById("preEarningsCeiling").value);
         var preAccidentCeilingAge = parseFloat(document.getElementById("preAccidentCeilingAge").value);
@@ -545,7 +611,12 @@
 				capCounter += 1;
 			}
 		}
-		cap = capLevels[capCounter - 1];
+		if(capIndicator == 1){
+			cap = capLevels[capCounter - 1];
+		}
+		else if (capIndicator == 0){
+			cap = 100000000;
+		}
 		
 		
 		if(gend == 0 && preAccidentCeiling >= malLT * Math.pow(inflation,yearCalc-yearLT)){
@@ -625,12 +696,12 @@
 		//document.getElementById("preResult").innerHTML = "Pre-Accident =  R " + result.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
 		/*---------------------------------------------------------------------------------------------------------------*/
-		// PRE-ACCIDENT
+		// END PRE-ACCIDENT
 		/*---------------------------------------------------------------------------------------------------------------*/
 
 
 		/*---------------------------------------------------------------------------------------------------------------*/
-		// POST-ACCIDENT
+		// START POST-ACCIDENT
 		/*---------------------------------------------------------------------------------------------------------------*/
 		var postAccidentCeiling = parseFloat(document.getElementById("postEarningsCeiling").value);
 		var postAccidentCeilingAge = parseFloat(document.getElementById("postAccidentCeilingAge").value);
@@ -640,17 +711,17 @@
 		var postAccidentRetirementAgeError = "Please supply a valid post-accident retirement age.";
 		var postErrorVariable = 0;
 		
-		if(isNaN(postAccidentCeiling))
+		if(isNaN(postAccidentCeiling) && unemployableVar != 0)
 		{
 			alert(postAccidentCeilingError);
 			postErrorVariable = 1;
 		}
-		if(isNaN(postAccidentCeilingAge))
+		if(isNaN(postAccidentCeilingAge) && unemployableVar != 0)
 		{
 			alert(postAccidentCeilingAgeError);
 			postErrorVariable = 1;
 		}
-		if(isNaN(postAccidentRetirementAge))
+		if(isNaN(postAccidentRetirementAge) && unemployableVar != 0)
 		{
 			alert(postAccidentRetirementAgeError);
 			postErrorVariable = 1;
@@ -667,6 +738,12 @@
 			var earningsAtCalc = parseFloat(document.getElementById("pastEarnings" + (yearCalc - yearAcc)).value);
 		}
 		
+		
+		if(unemployableVar == 0){
+			postAccidentCeiling = earningsAtCalc;
+			postAccidentCeilingAge = yearCalc - yearBirth + 1;
+			postAccidentRetirementAge = yearCalc - yearBirth;
+		}
 		
 		//var postPeriods = Math.ceil(postAccidentRetirementAge - (yearAcc - yearBirth));
 		var postIncome = new Array();
@@ -759,11 +836,11 @@
 		
 
 		/*---------------------------------------------------------------------------------------------------------------*/
-		// POST-ACCIDENT
+		// END POST-ACCIDENT
 		/*---------------------------------------------------------------------------------------------------------------*/
 		
 		/*---------------------------------------------------------------------------------------------------------------*/
-		// Cap Calculation & Deduction
+		// START Cap Calculation & Deduction
 		/*---------------------------------------------------------------------------------------------------------------*/
 		var contingencyDeduction = 0;
 		var preResultsPostContingency = 0;
@@ -797,7 +874,7 @@
 		
 		//document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + ((1 - futurePreCon) * result - (1 - futurePostCon) * postResult);
 		/*---------------------------------------------------------------------------------------------------------------*/
-		// Cap Calculation & Deduction
+		// END Cap Calculation & Deduction
 		/*---------------------------------------------------------------------------------------------------------------*/
 			
 		
@@ -813,6 +890,9 @@
     function clearAll(num){
 	
 		if (num == 1){
+			if(unemployableVar == 0){
+				unemployable();
+			}
 			document.getElementById("generalAssumptionsForm").reset();
 			document.getElementById("generalDetailsForm").reset();
 			document.getElementById("preAccidentForm").reset();
@@ -828,8 +908,14 @@
 			gend = 0;
 			document.getElementById("maleButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setGender(0)\">Male</button>";
 			document.getElementById("femaleButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setGender(1)\">Female</button>";
+			capIndicator = 1;
+			document.getElementById("capButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setCap(1)\">Cap</button>";
+			document.getElementById("noCapButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setCap(0)\">No Cap</button>";
 		}
 		else if (num == 2) {
+			if(unemployableVar == 0){
+				unemployable();
+			}
 			document.getElementById("postAccidentForm").reset();
 			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
 			document.getElementById("postAccidentActuals").innerHTML = postPastEarningsEmptyState;
