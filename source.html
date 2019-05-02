@@ -85,13 +85,13 @@
 		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
 	</div>
 	<div class="container">
-        <div class="row" style="height:500px; background-color: white" id="earningsSection">
+        <div class="row" style="height:550px; background-color: white" id="earningsSection">
             <div class="col-md-6" style="background-color: rgb(105,105,105); border: 1px solid black">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center; color: rgb(0,11,127)"><em><b>Pre-Accident</b></em></p>
 				</div>
 				<div class="row">
-					<form id="preAccidentForm" style="margin: auto">
+					<form id="preAccidentForm" style="margin-left: 25%; margin-right: 25%">
 					  Pre-Accident Retirement Age:<br>
 					  <input type="number" class="form-control" name="preAccidentRetirement" id="preAccidentRetirement" value="65">
 					  <br>
@@ -99,8 +99,13 @@
 					  <input type="number" class="form-control" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
 					  <br>
 					  Earnings @ Accident:<br>
-					  <input type="number" class="form-control" name="preEarningsAccident" id="preEarningsAccident" onchange="earningsStartSetup('preEarningsAccident','earningsStartPre','Pre')"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
-					  <div id="earningsStartPre"></div>
+					  <div id="preEarningsAccidentDiv" style="margin: auto">
+						<button type="button" class="btn btn-info" style="width: 100%" title="Use this option for uniform increases in income between the accident and the ceiling" onclick="earningsType('simpleUniform')">Simple Uniform</button>
+						<button type="button" class="btn btn-info" style="width: 100%" title="Use this option for yearly input of income between the accident date and calculation date" onclick="earningsType('detailedYearly')">Detailed Yearly</button>
+						<button type="button" class="btn btn-info" style="width: 100%" title="Use this option for if the claimant was unemployed at the time of the accident" onclick="earningsType('unemployed')">Unemployed @ Accident</button>
+					  </div>
+					  <!--<input type="number" class="form-control" name="preEarningsAccident" id="preEarningsAccident" onchange="earningsStartSetup('preEarningsAccident','earningsStartPre','Pre')"><div id="preEarningsAccidentPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsAccidentPaterson')">Paterson</button></div>
+					  <div id="earningsStartPre"></div>-->
 					  <br>
 					  Earnings @ Ceiling:<br>
 					  <input type="number" class="form-control" name="preEarningsCeiling" id="preEarningsCeiling"><div id="preEarningsCeilingPaterson"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if you would like to get Paterson values" onclick="paterson('preEarningsCeilingPaterson')">Paterson</button></div>
@@ -260,7 +265,7 @@
     function calcYear(){
         var calcDateText = "";
         //calcYearText = "Year of Calculation:<br><input type=\"number\" name=\"yearCalc\" id=\"yearCalc\" onchange=\"postEarningsSetup()\">";
-		calcDateText = "Date of Calculation:<br><input type=\"date\" class=\"form-control\" name=\"dateCalculation\" id=\"dateCalculation\" onchange=\"postEarningsSetup()\">";
+		calcDateText = "Date of Calculation:<br><input type=\"date\" class=\"form-control\" name=\"dateCalculation\" id=\"dateCalculation\" onchange=\"postEarningsSetup('post')\">";
         document.getElementById("calcYearDiv").innerHTML = calcDateText;
     }
 
@@ -287,10 +292,19 @@
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
 
-    function postEarningsSetup(){
-        var postEarningsText = "";
-        document.getElementById("earningsSection").style.height = "500px";
-        document.getElementById("postAccidentActuals").innerHTML = "";
+    function postEarningsSetup(prePost1){
+        var earningsText = "";
+		var prePost2 = "";
+		if(prePost1 == 'pre'){
+			var divUsed = "preEarningsAccidentDiv";
+			prePost2 = "pre";
+		}
+		else if(prePost1 == 'post'){
+			var divUsed = "postAccidentActuals";
+			prePost2 = "past";
+		}
+        document.getElementById("earningsSection").style.height = "550px";
+        document.getElementById(divUsed).innerHTML = "";
         //var yearAcc = parseFloat(document.getElementById("yearAccident").value);
         //var yearCalc = parseFloat(document.getElementById("yearCalc").value);
         var dateAcc = new Date(document.getElementById("dateAccident").value);
@@ -306,13 +320,22 @@
 		}
 
         for (i = 0; i < pastPeriods; i++){
-            postEarningsText += (yearAcc + i) + " <input type=\"number\" name=\"pastEarnings" + i + "\" id=\"pastEarnings" + i + "\"><br>";
+            earningsText += (yearAcc + i) + " <input type=\"number\" name=\"" + prePost2 + "Earnings" + i + "\" id=\"" + prePost2 + "Earnings" + i + "\"><br>";
         }
-		postEarningsText += "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to make earnings similar to pre-accident\" onclick=\"preEarnings(" + pastPeriods + "," + yearAcc + ")\">Pre-Accident</button>";
-        document.getElementById("postAccidentActuals").innerHTML = postEarningsText;
-		postPastEarningsEmptyState = postEarningsText;
-        document.getElementById("earningsSection").style.height = (520 + pastPeriods*26) + "px";
+		
+		//alert("DivUsed = " + divUsed);
+		//alert("prePost1 = " + prePost1);
+		//alert("prePost2 = " + prePost2);
+		
+		if(prePost1 == 'end' || prePost1 == 'post'){
+			earningsText += "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to make earnings similar to pre-accident\" onclick=\"preEarnings(" + pastPeriods + "," + yearAcc + ")\">Pre-Accident</button>";
+		}
+		
+        document.getElementById(divUsed).innerHTML = earningsText;
+		postPastEarningsEmptyState = earningsText;
+        document.getElementById("earningsSection").style.height = (570 + pastPeriods*26) + "px";
 		document.getElementById("actualEarningsHeading").innerHTML = "Actual Earnings Since Accident:";
+		prePost1 = "end";
     }
 
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -412,6 +435,26 @@
 			document.getElementById("capButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setCap(1)\">Cap</button>";
 		}
 	}
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
+	function earningsType(method){
+		if(method == 'simpleUniform'){
+			document.getElementById("preEarningsAccidentDiv").innerHTML = "<input type=\"number\" class=\"form-control\" name=\"preEarningsAccident\" id=\"preEarningsAccident\" onchange=\"earningsStartSetup('preEarningsAccident','earningsStartPre','Pre')\"><div id=\"preEarningsAccidentPaterson\"><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button></div>";
+			document.getElementById("preAccidentForm").style.margin = "auto";
+		}
+		else if(method == 'detailedYearly'){
+			postEarningsSetup('pre');
+		}/*
+		else if(method == 'unemployed'){
+			document.getElementById("preEarningsAccidentDiv").innerHTML = ;
+		}
+		*/
+	}
+
 
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -899,10 +942,12 @@
 			document.getElementById("postAccidentForm").reset();
 			document.getElementById("contingencies").reset();
 			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
-			document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
+			//document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
+			document.getElementById("preEarningsAccidentDiv").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for uniform increases in income between the accident and the ceiling\" onclick=\"earningsType('simpleUniform')\">Simple Uniform</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for yearly input of income between the accident date and calculation date\" onclick=\"earningsType('detailedYearly')\">Detailed Yearly</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for if the claimant was unemployed at the time of the accident\" onclick=\"earningsType('unemployed')\">Unemployed @ Accident</button>";
 			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
-			document.getElementById("postAccidentActuals").innerHTML = postPastEarningsEmptyState;
-			document.getElementById("earningsStartPre").innerHTML = "";
+			//document.getElementById("postAccidentActuals").innerHTML = postPastEarningsEmptyState;
+			postEarningsSetup('post');
+			//document.getElementById("earningsStartPre").innerHTML = "";
 			document.getElementById("earningsStartPost").innerHTML = "";
 			preAccidentEqualiser = 0;
 			gend = 0;
@@ -911,6 +956,8 @@
 			capIndicator = 1;
 			document.getElementById("capButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setCap(1)\">Cap</button>";
 			document.getElementById("noCapButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setCap(0)\">No Cap</button>";
+			document.getElementById("preAccidentForm").style.marginLeft = "25%";
+			document.getElementById("preAccidentForm").style.marginRight = "25%";
 		}
 		else if (num == 2) {
 			if(unemployableVar == 0){
@@ -918,15 +965,19 @@
 			}
 			document.getElementById("postAccidentForm").reset();
 			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
-			document.getElementById("postAccidentActuals").innerHTML = postPastEarningsEmptyState;
+			//document.getElementById("postAccidentActuals").innerHTML = postPastEarningsEmptyState;
+			postEarningsSetup('post');
 			document.getElementById("earningsStartPost").innerHTML = "";
 			preAccidentEqualiser = 0;
 		}
 		else if (num == 3) {
 			document.getElementById("preAccidentForm").reset();
-			document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
+			//document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
 			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
-			document.getElementById("earningsStartPre").innerHTML = "";
+			//document.getElementById("earningsStartPre").innerHTML = "";
+			document.getElementById("preEarningsAccidentDiv").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for uniform increases in income between the accident and the ceiling\" onclick=\"earningsType('simpleUniform')\">Simple Uniform</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for yearly input of income between the accident date and calculation date\" onclick=\"earningsType('detailedYearly')\">Detailed Yearly</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for if the claimant was unemployed at the time of the accident\" onclick=\"earningsType('unemployed')\">Unemployed @ Accident</button>";
+			document.getElementById("preAccidentForm").style.marginLeft = "25%";
+			document.getElementById("preAccidentForm").style.marginRight = "25%";
 		}
        
     }
