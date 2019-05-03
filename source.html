@@ -20,7 +20,7 @@
 			<div class="col-md-2"></div>
 		</div>
 		<div class="row" style="height:40px; background-color: rgb(254,254,254)"></div>
-        <div class="row" style="height:400px; background-color: rgb(105,105,105); border: 1px solid black">
+        <div class="row" style="height:420px; background-color: rgb(105,105,105); border-left: 1px solid black; border-right: 1px solid black;  border-top: 1px solid black; border-bottom: 2px solid blue">
             <div class="col-md-6">
                 <p style="text-align:center; color: rgb(0,11,127)"><em><b>General Assumptions</em></b></p>
 				<div class="row">	
@@ -81,18 +81,18 @@
             </div>       
         </div>
 	</div>
-	<div class="container">
-		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
-	</div>
-	<div class="container">
-        <div class="row" style="height:550px; background-color: white" id="earningsSection">
-            <div class="col-md-6" style="background-color: rgb(105,105,105); border: 1px solid black">
+	<!--<div class="container">
+		<div class="row" style="height:10px; background-color: rgb(0,11,127)"></div>
+	</div>-->
+	<div class="container" style="border: 1px solid black">
+        <div class="row" style="height:550px; background-color: rgb(105,105,105)" id="earningsSection">
+            <div class="col-md-6" style="background-color: rgb(105,105,105); border-right: 1px solid black">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center; color: rgb(0,11,127)"><em><b>Pre-Accident</b></em></p>
 				</div>
 				<div class="row">
 					<form id="preAccidentForm" style="margin-left: 25%; margin-right: 25%">
-					  Pre-Accident Retirement Age:<br>
+					  Retirement Age:<br>
 					  <input type="number" class="form-control" name="preAccidentRetirement" id="preAccidentRetirement" value="65">
 					  <br>
 					  Ceiling Age:<br>
@@ -113,13 +113,13 @@
 				</div>
             </div>
 			<!--<div class="col-md-2" style="background-color: rgb(254,254,254);"></div>-->
-			<div class="col-md-6" style="background-color: rgb(105,105,105); border: 1px solid black">
+			<div class="col-md-6" style="background-color: rgb(105,105,105);">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center; color: rgb(0,11,127)"><em><b>Post-Accident</b></em></p>
 				</div>
 				<div class="row">
 					<form id="postAccidentForm" style="margin: auto">
-					  Post-Accident Retirement Age:<br>
+					  Retirement Age:<br>
 					  <input type="number" class="form-control" name="postAccidentRetirement" id="postAccidentRetirement"><button type="button" class="btn btn-info" style="width: 100%" title="Use this option if the claimant is unemployable from the calculation date" onclick="unemployable()">Unemployable</button>
 					  <br>
 					  <br>
@@ -137,21 +137,23 @@
 				</div>
 			</div>
         </div>
-	</div>
-	<div class="container">
-		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
-	</div>
-	<div class="container">
-		<div class="row" style="margin: auto">
+		<div class="row" style="height: 40px; background-color: rgb(105,105,105)">
+			<div class="col-md-6" style="text-align: center; border-right: 1px solid black">
 				<input type="button" class="btn btn-secondary" onclick="clearAll(3)" style="margin: auto" value="Clear Pre-Accident Details">
+			</div>
+			<div class="col-md-6" style="text-align: center">
 				<input type="button" class="btn btn-secondary" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
+			</div>
 		</div>
+	</div>
+	<div class="container">
 		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
-		<div class="row" style="height:50px; background-color: rgb(254,254,254)"></div>
-		
-		
+	</div>
+	<div class="container">
+		<div class="row" style="height:50px; background-color: rgb(254,254,254)">
+			<button class="btn btn-primary" onclick="calculate()" style="margin: auto">Calculate</button>
+		</div>		
         <div class="row" style="height:50px; background-color: rgb(254,254,254)">
-            <button class="btn btn-primary" onclick="calculate()" style="margin: auto">Calculate</button>
             <input type="button" class="btn btn-secondary" onclick="clearAll(1)" style="margin: auto" value="Clear All">
         </div>
 	</div>
