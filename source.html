@@ -10,17 +10,17 @@
   </head>
 
 <body style="background-color: rgb(254,254,254)">
-    <div class="container">
+    <div class="container-fluid">
 		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
         <div class="row" style="height:200px; background-color: rgb(254,254,254)">
 			<div class="col-md-2"></div>
 			<div class="col-md-8" style="text-align: center">
-				<img src="excapLogo.png" alt="Exchange Capital Logo" height="180" width="70%">
+				<img src="excapLogo.png" alt="Exchange Capital Logo" height="80%" width="50%">
 			</div>
 			<div class="col-md-2"></div>
 		</div>
 		<div class="row" style="height:40px; background-color: rgb(254,254,254)"></div>
-        <div class="row" style="height:420px; background-color: rgb(105,105,105); border-left: 1px solid black; border-right: 1px solid black;  border-top: 1px solid black; border-bottom: 2px solid blue">
+        <div class="row" style="height:420px; background-color: rgb(105,105,105); border-left: 1px solid black; border-right: 1px solid black;  border-top: 1px solid black;"> <!-- border-bottom: 2px solid blue-->
             <div class="col-md-6">
                 <p style="text-align:center; color: rgb(0,11,127)"><em><b>General Assumptions</em></b></p>
 				<div class="row">	
@@ -81,17 +81,17 @@
             </div>       
         </div>
 	</div>
-	<!--<div class="container">
+	<!--<div class="container-fluid">
 		<div class="row" style="height:10px; background-color: rgb(0,11,127)"></div>
 	</div>-->
-	<div class="container" style="border: 1px solid black">
+	<div class="container-fluid" style="border: 1px solid black">
         <div class="row" style="height:550px; background-color: rgb(105,105,105)" id="earningsSection">
-            <div class="col-md-6" style="background-color: rgb(105,105,105); border-right: 1px solid black">
+            <div class="col-md-6" style="background-color: rgb(105,105,105); border-right: 1px solid black; text-align:center">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center; color: rgb(0,11,127)"><em><b>Pre-Accident</b></em></p>
 				</div>
 				<div class="row">
-					<form id="preAccidentForm" style="margin-left: 25%; margin-right: 25%">
+					<form id="preAccidentForm" style="margin: auto">
 					  Retirement Age:<br>
 					  <input type="number" class="form-control" name="preAccidentRetirement" id="preAccidentRetirement" value="65">
 					  <br>
@@ -113,7 +113,7 @@
 				</div>
             </div>
 			<!--<div class="col-md-2" style="background-color: rgb(254,254,254);"></div>-->
-			<div class="col-md-6" style="background-color: rgb(105,105,105);">
+			<div class="col-md-6" style="background-color: rgb(105,105,105); text-align:center">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center; color: rgb(0,11,127)"><em><b>Post-Accident</b></em></p>
 				</div>
@@ -146,10 +146,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
 	</div>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row" style="height:50px; background-color: rgb(254,254,254)">
 			<button class="btn btn-primary" onclick="calculate()" style="margin: auto">Calculate</button>
 		</div>		
@@ -158,21 +158,21 @@
         </div>
 	</div>
 	
-	<div class="container">
+	<div class="container-fluid">
         <div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
     </div>
-	<div class="container">
-		<div class="row" style="height:500px; background-color: rgb(105,105,105); border: 1px solid black" id="resultsSection">
+	<div class="container-fluid">
+		<div class="row" style="height:500px; background-color: rgb(105,105,105); border: 1px solid black; text-align: center" id="resultsSection">
             <div class="col-md-12">
                 <p style="text-align: center; color: rgb(0,11,127)"><b>Results</b></p>
                 <p style="text-align: center" id="preResult"></p>
                 <p style="text-align: center" id="postResult"></p>
                 <p style="text-align: center" id="totalResult"></p>
 				<div class="row" style="height:50px"></div>
-				<div class="row" style="height:250px">
+				<div class="row" style="height:350px">
 					<div class="col-md-12"> <!--style="border: 1px solid black"-->
 						<div class="row">
-							<form id="contingencies" style="margin-left: 40%">
+							<form id="contingencies" style="margin: auto">
 							  Past Pre-Accident Contingency:<br>
 							  <input type="number" class="form-control" name="pastPreCon" id="pastPreCon" value="5">
 							  <br>
@@ -186,18 +186,16 @@
 							  <input type="number" class="form-control" name="futurePostCon" id="futurePostCon" value="20">
 							</form>
 						</div>
+						<br>
+						<div class="row"">
+							<button class="btn btn-primary" onclick="printResults()" style="margin: auto">Print Results</button>
+						</div>
 					</div>
-					<!--<div class="col-md-6">
-						<p style="text-align: center"><b>Contingency Result</b></p>
-						<p style="text-align: center" id="preResultCon"><b></b></p>
-						<p style="text-align: center" id="postResultCon"><b></b></p>
-						<p style="text-align: center" id="totalResultCon"><b></b></p>
-					</div>-->
 				</div>
             </div>
         </div>
 	</div>
-	<div class="container">
+	<div class="container-fluid">
         <div class="row" style="height:200px; background-color: rgb(254,254,254)"></div>
 		<div class="row" style="height:20px; background-color: rgb(254,254,254)">
 			<div class="col-md-12" style="text-align: center; color: rgb(0,11,127)">
@@ -453,12 +451,13 @@
 		else if(method == 'detailedYearly'){
 			postEarningsSetup('pre');
 			preEarningsMethod = 2;
-		}/*
+		}
 		else if(method == 'unemployed'){
-			document.getElementById("preEarningsAccidentDiv").innerHTML = ;
+			document.getElementById("preEarningsAccidentDiv").innerHTML = "<input type=\"number\" class=\"form-control\" name=\"preEarningsAccident\" id=\"preEarningsAccident\" onchange=\"earningsStartSetup('preEarningsAccident','earningsStartPre','Pre')\"><div id=\"preEarningsAccidentPaterson\"><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button></div><br>Age of Employment<br><input type=\"number\" class=\"form-control\" name=\"preEarningsStartAge\" id=\"preEarningsStartAge\">";
+			document.getElementById("preAccidentForm").style.margin = "auto";
 			preEarningsMethod = 3;
 		}
-		*/
+		
 	}
 
 
@@ -562,6 +561,15 @@
 				var accidentEarnings = parseFloat(document.getElementById("preEarnings0").value);
 			}
 		}
+		else if(preEarningsMethod == 3){
+			if(isNaN(parseFloat(document.getElementById("preEarningsAccident").value)) || isNaN(parseFloat(document.getElementById("preEarningsStartAge").value))){
+				alert("Please complete the pre-accident earnings form.");
+				return;
+			}
+			else {
+				var accidentEarnings = parseFloat(document.getElementById("preEarningsAccident").value);
+			}
+		}
 		
 		
 		//console.log(dateBirth);
@@ -648,20 +656,8 @@
 			errorVariable = 1;
 		}
 		
-		if(accidentEarnings == 0){
-			initialEarningsPre = parseFloat(document.getElementById("initialEarningsPre").value);
-			initialAgePre = parseFloat(document.getElementById("initialAgePre").value);
-			if(isNaN(initialEarningsPre) || isNaN(initialAgePre)){
-				alert(accidentEarningsError);
-				errorVariable = 1;
-			}
-			else
-				var annualIncrease = (preAccidentCeiling - initialEarningsPre) / (preAccidentCeilingAge - initialAgePre);
-		}
-		else {
-			initialEarningsPre = accidentEarnings;
-			initialAgePre = yearAcc-yearBirth;
-		}
+		
+		
 		
 		if(errorVariable == 1){
 			return;
@@ -696,8 +692,11 @@
 		}
 		
 		
+		
 		if (preEarningsMethod == 1){
 			var annualIncrease = (preAccidentCeiling - accidentEarnings) / (preAccidentCeilingAge - (yearAcc - yearBirth));
+			initialEarningsPre = accidentEarnings;
+			initialAgePre = yearAcc-yearBirth;
 		}
 		else if(preEarningsMethod == 2){
 			if(isNaN(parseFloat(document.getElementById("preEarnings" + (yearCalc - yearAcc)).value))){
@@ -707,6 +706,11 @@
 			else {
 				var annualIncrease = (preAccidentCeiling - parseFloat(document.getElementById("preEarnings" + (yearCalc - yearAcc)).value)) / (preAccidentCeilingAge - (yearCalc - yearBirth));
 			}
+		}
+		else if(preEarningsMethod == 3){
+			initialEarningsPre = accidentEarnings;
+			initialAgePre = parseFloat(document.getElementById("preEarningsStartAge").value);
+			var annualIncrease = (preAccidentCeiling - initialEarningsPre) / (preAccidentCeilingAge - initialAgePre);
 		}
 		
 		for (i = 0; i < periods; i++){
@@ -723,7 +727,7 @@
 
 			
 			
-			if(preEarningsMethod == 1){
+			if(preEarningsMethod == 1 || preEarningsMethod == 3){
 				if(age[i] < initialAgePre){
 					income[i] = 0;
 				}
@@ -899,7 +903,17 @@
 					postIncome[i] = postIncome[i-1] * eliminationInidicator;
 				}
 				else {
-					postIncome[i] = (earningsAtCalc + postAnnualIncrease * (i - (yearCalc - yearAcc))) * eliminationInidicator;
+					if(preEarningsMethod == 3){
+						if(postAge[i] <= initialAgePre){
+							postIncome[i] = income[i];
+						}
+						else{
+							postIncome[i] = (initialEarningsPre + ((postAccidentCeiling - initialEarningsPre) / (postAccidentCeilingAge - initialAgePre)) * (i - (initialAgePre - yearAcc + yearBirth))) * eliminationInidicator;
+						}
+					}
+					else {
+						postIncome[i] = (earningsAtCalc + postAnnualIncrease * (i - (yearCalc - yearAcc))) * eliminationInidicator;
+					}
 				}
 			}
 							
@@ -972,6 +986,7 @@
 		document.getElementById("postResult").innerHTML = "<b>Post-Accident =  R " + postResultsPostContingency.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</b>';
 		document.getElementById("totalResult").innerHTML = "<b>Total Loss =  R " + capResult.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</b>';
 		
+		document.getElementById("resultsSection").style.height = "620px";
 		//document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + ((1 - futurePreCon) * result - (1 - futurePostCon) * postResult);
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// END Cap Calculation & Deduction
@@ -985,6 +1000,32 @@
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
+
+
+	function printResults(){
+		var dateBirth1 = new Date(document.getElementById("dateBirth").value);
+		var dateAcc1 = new Date(document.getElementById("dateAccident").value);
+		var dateCalc1 = new Date(document.getElementById("dateCalculation").value);
+		var headingText = "<h4>Loss of Income Estimation</h4>";
+		var birthDateText = "<p>Date of Birth:<br>" + dateBirth1 + "</p><br>";
+		var accidentDateText = "<p>Date of Accident:<br>" + dateAcc1 + "</p><br>";
+		var calculationDateText = "<p>Date of Calculation:<br>" + dateCalc1 + "</p><br>";
+		var disclaimerText = "<p><em><b>Disclaimer</b><br>This result does not constitute and hence should not be used in place of a thorough Actuarial analysis of the true claim value. This result represents an estimation of the loss of income which is based on a number of assumptions that may not hold true to the specific case in question.</em></p>";
+		var printableHtml = headingText + "<br><br><br><br>" + birthDateText + accidentDateText + calculationDateText + "<br><br><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML + "<br><br><br><br>" + disclaimerText;
+		//var printableHtml = "<p>Hello</p>" + "<br>" + Date(document.getElementById("dateAccident").value) + "<br><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML;
+		w = window.open();
+		w.document.write(printableHtml);
+		w.print();
+		w.close;
+	
+	}
+
+
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------*/
+
 
 
     function clearAll(num){
