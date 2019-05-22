@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Exchange Capital Road Accident Fund Calculator</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link rel="stylesheet" href="styles.css" type="text/css">
   </head>
 
-<body style="background-color: rgb(254,254,254)">
+<body class="base">
     <div class="container-fluid">
-		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
-        <div class="row" style="height:200px; background-color: rgb(254,254,254)">
+		<div class="row base" style="height:20px"></div>
+        <div class="row base" style="height:200px">
 			<div class="col-md-2"></div>
 			<div class="col-md-8" style="text-align: center">
 				<img src="excapLogo.png" alt="Exchange Capital Logo" height="80%" width="50%">
 			</div>
 			<div class="col-md-2"></div>
 		</div>
-		<div class="row" style="height:40px; background-color: rgb(254,254,254)"></div>
-        <div class="row" style="height:420px; background-color: rgb(105,105,105); border-left: 1px solid black; border-right: 1px solid black;  border-top: 1px solid black;"> <!-- border-bottom: 2px solid blue-->
+		<div class="row base" style="height:40px"></div>
+        <div class="row calc" style="height:420px; border-left: 1px solid black; border-right: 1px solid black;  border-top: 1px solid black;"> <!-- border-bottom: 2px solid blue-->
             <div class="col-md-6">
                 <p style="text-align:center; color: rgb(0,11,127)"><em><b>General Assumptions</em></b></p>
 				<div class="row">	
@@ -85,8 +86,8 @@
 		<div class="row" style="height:10px; background-color: rgb(0,11,127)"></div>
 	</div>-->
 	<div class="container-fluid" style="border: 1px solid black">
-        <div class="row" style="height:550px; background-color: rgb(105,105,105)" id="earningsSection">
-            <div class="col-md-6" style="background-color: rgb(105,105,105); border-right: 1px solid black; text-align:center">
+        <div class="row calc" style="height:550px" id="earningsSection">
+            <div class="col-md-6 calc" style="border-right: 1px solid black; text-align:center">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center; color: rgb(0,11,127)"><em><b>Pre-Accident</b></em></p>
 				</div>
@@ -113,7 +114,7 @@
 				</div>
             </div>
 			<!--<div class="col-md-2" style="background-color: rgb(254,254,254);"></div>-->
-			<div class="col-md-6" style="background-color: rgb(105,105,105); text-align:center">
+			<div class="col-md-6 calc" style="text-align:center">
                 <div class="row" style="margin: auto">
 					<p style="text-align:center; color: rgb(0,11,127)"><em><b>Post-Accident</b></em></p>
 				</div>
@@ -137,7 +138,7 @@
 				</div>
 			</div>
         </div>
-		<div class="row" style="height: 40px; background-color: rgb(105,105,105)">
+		<div class="row calc" style="height: 40px">
 			<div class="col-md-6" style="text-align: center; border-right: 1px solid black">
 				<input type="button" class="btn btn-secondary" onclick="clearAll(3)" style="margin: auto" value="Clear Pre-Accident Details">
 			</div>
@@ -145,59 +146,82 @@
 				<input type="button" class="btn btn-secondary" onclick="clearAll(2)" style="margin: auto" value="Clear Post-Accident Details">
 			</div>
 		</div>
+		<div class="row calc" style="height: 5px">
+			<div class="col-md-6" style="border-right: 1px solid black"></div>
+			<div class="col-md-6"></div>
+		</div>
 	</div>
-	<div class="container-fluid">
-		<div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
-	</div>
-	<div class="container-fluid">
-		<div class="row" style="height:50px; background-color: rgb(254,254,254)">
+	<!--<div class="container-fluid base">
+		<div class="row" style="height:40px"></div>
+	</div>-->
+	<!--<div class="container-fluid base">
+		<div class="row" style="height:50px">
 			<button class="btn btn-primary" onclick="calculate()" style="margin: auto">Calculate</button>
 		</div>		
-        <div class="row" style="height:50px; background-color: rgb(254,254,254)">
+        <div class="row" style="height:50px">
             <input type="button" class="btn btn-secondary" onclick="clearAll(1)" style="margin: auto" value="Clear All">
         </div>
-	</div>
+	</div>-->
 	
 	<div class="container-fluid">
-        <div class="row" style="height:20px; background-color: rgb(254,254,254)"></div>
-    </div>
-	<div class="container-fluid">
-		<div class="row" style="height:500px; background-color: rgb(105,105,105); border: 1px solid black; text-align: center" id="resultsSection">
+		<div class="row calc" style="height:600px; border-bottom: 1px solid black; text-align: center; padding-top: 30px" id="resultsSection">
             <div class="col-md-12">
-                <p style="text-align: center; color: rgb(0,11,127)"><b>Results</b></p>
-                <p style="text-align: center" id="preResult"></p>
-                <p style="text-align: center" id="postResult"></p>
-                <p style="text-align: center" id="totalResult"></p>
-				<div class="row" style="height:50px"></div>
-				<div class="row" style="height:350px">
+                <div class="row">
 					<div class="col-md-12"> <!--style="border: 1px solid black"-->
 						<div class="row">
 							<form id="contingencies" style="margin: auto">
-							  Past Pre-Accident Contingency:<br>
-							  <input type="number" class="form-control" name="pastPreCon" id="pastPreCon" value="5">
+							  <div class="row" style="margin: auto">
+								<p><em><b>Contingencies</em></b></p>
+							  </div>
+							  <div class="row">
+								<div class="col-md-6">
+									Past Pre-Accident:<br>
+									<input type="number" class="form-control" name="pastPreCon" id="pastPreCon" value="5">
+								</div>
+								<div class="col-md-6">
+									Past Post-Accident:<br>
+									<input type="number" class="form-control" name="pastPostCon" id="pastPostCon" value="5">
+								</div>
+							  </div>
 							  <br>
-							  Past Post-Accident Contingency:<br>
-							  <input type="number" class="form-control" name="pastPostCon" id="pastPostCon" value="5">
+							  <div class="row">
+								<div class="col-md-6">
+									Future Pre-Accident:<br>
+									<input type="number" class="form-control" name="futurePreCon" id="futurePreCon" value="15">
+								</div>
+								<div class="col-md-6">
+									Future Post-Accident:<br>
+									<input type="number" class="form-control" name="futurePostCon" id="futurePostCon" value="20">
+								</div>
+							  </div>
+							  
 							  <br>
-							  Future Pre-Accident Contingency:<br>
-							  <input type="number" class="form-control" name="futurePreCon" id="futurePreCon" value="15">
-							  <br>
-							  Future Post-Accident Contingency:<br>
-							  <input type="number" class="form-control" name="futurePostCon" id="futurePostCon" value="20">
+							  
 							</form>
 						</div>
-						<br>
-						<div class="row"">
-							<button class="btn btn-primary" onclick="printResults()" style="margin: auto">Print Results</button>
+						<br><br>
+						<div class="row" style="height:50px">
+							<button class="btn btn-primary" onclick="calculate()" style="margin: auto">Calculate</button>
+						</div>		
+						<div class="row" style="height:50px">
+							<input type="button" class="btn btn-secondary" onclick="clearAll(1)" style="margin: auto" value="Clear All">
 						</div>
 					</div>
+				</div>
+				<div class="row" style="height:50px"></div>
+				<p style="text-align: center; color: rgb(0,11,127)"><b>Results</b></p>
+                <p style="text-align: center" id="preResult"></p>
+                <p style="text-align: center" id="postResult"></p>
+                <p style="text-align: center" id="totalResult"></p>
+				<div class="row"">
+					<button class="btn btn-primary" onclick="printResults()" style="margin: auto">Print Results</button>
 				</div>
             </div>
         </div>
 	</div>
 	<div class="container-fluid">
-        <div class="row" style="height:200px; background-color: rgb(254,254,254)"></div>
-		<div class="row" style="height:20px; background-color: rgb(254,254,254)">
+        <div class="row base" style="height:200px"></div>
+		<div class="row base" style="height:20px">
 			<div class="col-md-12" style="text-align: center; color: rgb(0,11,127)">
 				<p><em>Exchange Capital - Invaluable Expertise</em></p>
 			</div>
@@ -986,7 +1010,7 @@
 		document.getElementById("postResult").innerHTML = "<b>Post-Accident =  R " + postResultsPostContingency.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</b>';
 		document.getElementById("totalResult").innerHTML = "<b>Total Loss =  R " + capResult.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</b>';
 		
-		document.getElementById("resultsSection").style.height = "620px";
+		document.getElementById("resultsSection").style.height = "650px";
 		//document.getElementById("totalResultCon").innerHTML = "Total Loss = R" + ((1 - futurePreCon) * result - (1 - futurePostCon) * postResult);
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// END Cap Calculation & Deduction
