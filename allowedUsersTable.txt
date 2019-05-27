@@ -1,0 +1,2 @@
+create table allowedUsers(email varchar(100), company varchar(100));
+

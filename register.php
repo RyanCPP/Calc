@@ -41,6 +41,41 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Close statement
         mysqli_stmt_close($stmt);
     }
+
+    // Validate email access
+    if(empty(trim($_POST["email"]))){
+        $email_err = "Please enter an email.";
+    } else{
+        // Prepare a select statement
+        $sql = "SELECT email FROM allowedUsers WHERE email = ?";
+        
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "s", $param_email);
+            
+            // Set parameters
+            $param_email = trim($_POST["email"]);
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                /* store result */
+                mysqli_stmt_store_result($stmt);
+
+                if(mysqli_stmt_num_rows($stmt) != 1){
+                    $email_err = "You do not have permission to register. Please contact 0747586490 to register.";
+                } else{
+                    $email = trim($_POST["email"]);
+                }
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+        }
+         
+        // Close statement
+        mysqli_stmt_close($stmt);
+    }
+
+
     
     // Validate password
     if(empty(trim($_POST["password"]))){
