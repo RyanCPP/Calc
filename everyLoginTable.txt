@@ -1,0 +1,2 @@
+create table everyLogin(date datetime, user varchar(100), ip varchar(50));
+
