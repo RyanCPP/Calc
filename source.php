@@ -1,3 +1,17 @@
+<?php
+// Initialize the session
+session_start();
+ 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
+
+// Include config file
+require_once "config.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -170,7 +184,7 @@
 						<div class="row">
 							<form id="contingencies" style="margin: auto">
 							  <div class="row" style="margin: auto">
-								<p><em><b>Contingencies</em></b></p>
+								<p style="color: rgb(0,11,127)"><em><b>Contingencies</em></b></p>
 							  </div>
 							  <div class="row">
 								<div class="col-md-6">
@@ -219,7 +233,15 @@
         </div>
 	</div>
 	<div class="container-fluid">
-        <div class="row base" style="height:200px"></div>
+        <div class="row base" style="height:100px"></div>
+        <div class="row base" style="height:40px">
+            <div class="col-md-5"></div>
+            <div class="col-md-2" style="text-align: center">
+                <a href="logout.php"><button type="button" class="btn btn-light">Logout</button></a>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+        <div class="row base" style="height:100px"></div>
 		<div class="row base" style="height:20px">
 			<div class="col-md-12" style="text-align: center; color: rgb(0,11,127)">
 				<p><em>Exchange Capital - Invaluable Expertise</em></p>
@@ -798,9 +820,14 @@
 			}            
 			else {
 				discount[i] = 1 / (Math.pow(discountRate,year[i]-yearCalc+2));
-				survival[i] = survival[i-1] * lifeTable[ages.indexOf(age[i])];
-				//console.log(survival[i-1] + "   " + lifeTable[ages.indexOf(age[i])] + "    " + (survival[i-1] * lifeTable[ages.indexOf(age[i])]));
-				//survival[i] = 0.99;
+				
+				if(yearAcc == yearCalc && i == 0){
+					survival[i] = lifeTable[ages.indexOf(age[i])];
+				}
+				else {
+					survival[i] = survival[i-1] * lifeTable[ages.indexOf(age[i])];
+				}
+				
 			}
 
 			if(year[i] == yearAcc){
@@ -949,8 +976,14 @@
 			}            
 			else {
 				postDiscount[i] = 1 / (Math.pow(discountRate,postYear[i]-yearCalc+2));
-				postSurvival[i] = survival[i-1] * lifeTable[ages.indexOf(age[i])];
-				//postSurvival[i] = 0.99;
+				
+				if(yearAcc == yearCalc && i == 0){
+					postSurvival[i] = lifeTable[ages.indexOf(age[i])];
+				}
+				else {
+					postSurvival[i] = survival[i-1] * lifeTable[ages.indexOf(age[i])];
+				}
+				
 			}
 			
 			if(postYear[i] == yearAcc){
