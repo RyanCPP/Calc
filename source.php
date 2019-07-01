@@ -112,9 +112,10 @@ require_once "config.php";
 					  Ceiling Age:<br>
 					  <input type="number" class="form-control" name="preAccidentCeilingAge" id="preAccidentCeilingAge" value="45">
 					  <br>
-					  Earnings @ Accident:<br>
+					  <div id="earningsAccidentWording">Earnings @ Accident:</div>
+					  <!--Earnings @ Accident:<br>-->
 					  <div id="preEarningsAccidentDiv" style="margin: auto">
-						<button type="button" class="btn btn-info" style="width: 100%" title="Use this option for uniform increases in income between the accident and the ceiling" onclick="earningsType('simpleUniform')">Simple Uniform</button>
+						<button type="button" class="btn btn-info" style="width: 100%" title="Use this option for uniform increases in income between the accident and the ceiling" onclick="earningsType('simpleUniform')">Employed @ Accident</button>
 						<button type="button" class="btn btn-info" style="width: 100%" title="Use this option for yearly input of income between the accident date and calculation date" onclick="earningsType('detailedYearly')">Detailed Yearly</button>
 						<button type="button" class="btn btn-info" style="width: 100%" title="Use this option for if the claimant was unemployed at the time of the accident" onclick="earningsType('unemployed')">Unemployed @ Accident</button>
 					  </div>
@@ -272,6 +273,11 @@ require_once "config.php";
 	var femLT = 100000;
 	var yearLT = 2011;
 	var preEarningsMethod;
+	var preAccidentCeilingGlobal;
+	var preAccidentRetirementAgeGlobal;
+	var accidentEarningsGlobal;
+	var initialAgePreGlobal;
+		
 	
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -499,6 +505,7 @@ require_once "config.php";
 		}
 		else if(method == 'unemployed'){
 			document.getElementById("preEarningsAccidentDiv").innerHTML = "<input type=\"number\" class=\"form-control\" name=\"preEarningsAccident\" id=\"preEarningsAccident\" onchange=\"earningsStartSetup('preEarningsAccident','earningsStartPre','Pre')\"><div id=\"preEarningsAccidentPaterson\"><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button></div><br>Age of Employment<br><input type=\"number\" class=\"form-control\" name=\"preEarningsStartAge\" id=\"preEarningsStartAge\">";
+			document.getElementById("earningsAccidentWording").innerHTML = "Initial Earnings";
 			document.getElementById("preAccidentForm").style.margin = "auto";
 			preEarningsMethod = 3;
 		}
@@ -849,6 +856,11 @@ require_once "config.php";
 
 		//document.getElementById("preResult").innerHTML = "Pre-Accident =  R " + result.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
+		preAccidentCeilingGlobal = preAccidentCeiling;
+		preAccidentRetirementAgeGlobal = preAccidentRetirementAge;
+		accidentEarningsGlobal = accidentEarnings;
+		initialAgePreGlobal = initialAgePre;
+	
 		/*---------------------------------------------------------------------------------------------------------------*/
 		// END PRE-ACCIDENT
 		/*---------------------------------------------------------------------------------------------------------------*/
@@ -1059,15 +1071,30 @@ require_once "config.php";
 
 
 	function printResults(){
+		var months = ["January"," February","March","April","May","June","July","August","September","October","November","December"];
 		var dateBirth1 = new Date(document.getElementById("dateBirth").value);
 		var dateAcc1 = new Date(document.getElementById("dateAccident").value);
 		var dateCalc1 = new Date(document.getElementById("dateCalculation").value);
-		var headingText = "<h4>Loss of Income Estimation</h4>";
-		var birthDateText = "<p>Date of Birth:<br>" + dateBirth1 + "</p><br>";
-		var accidentDateText = "<p>Date of Accident:<br>" + dateAcc1 + "</p><br>";
-		var calculationDateText = "<p>Date of Calculation:<br>" + dateCalc1 + "</p><br>";
+		var logo = "<div class=\"col-md-8\" style=\"text-align: center\"><img src=\"excapLogo.png\" alt=\"Exchange Capital Logo\" height=\"100px\" width=\"200px\"></div>";
+		var headingText = "<div style=\"text-align: center\"><u><h4>Loss of Income Estimation</h4></u></div>";
+		var birthDateText = "<p>Date of Birth:<br>" + dateBirth1.getDate() + " " + months[dateBirth1.getMonth()] + " " + dateBirth1.getFullYear() + "</p>";
+		var accidentDateText = "<p>Date of Accident:<br>" + dateAcc1.getDate() + " " + months[dateAcc1.getMonth()] + " " + dateAcc1.getFullYear() + "</p>";
+		var calculationDateText = "<p>Date of Calculation:<br>" + dateCalc1.getDate() + " " + months[dateCalc1.getMonth()] + " " + dateCalc1.getFullYear() + "</p>";
+		var postAccidentDescriptionText = "<p></p><br>";
+		var preAccidentStandardDescription = "The claimant's pre-accident career ceiling would have been R " + preAccidentCeilingGlobal + ". It is expected that the claimant would have retired at the age of " + preAccidentRetirementAgeGlobal + ".";
+		
+		if (preEarningsMethod == 1){
+			var preAccidentDescriptionText = "The claimant was employed at the time of the accident and received an annual income of R " + accidentEarningsGlobal + ". " + preAccidentStandardDescription;
+		}
+		else if(preEarningsMethod == 2){
+			var preAccidentDescriptionText = "The claimant was employed at the time of the accident and received an annual income of R " + accidentEarningsGlobal + ". " + preAccidentStandardDescription ;
+		}
+		else if(preEarningsMethod == 3){
+			var preAccidentDescriptionText = "The claimant was unemployed at the time of the accident and would have entered the labour market at the age of " + initialAgePreGlobal + ". Upon entering the workplace the claimant would have received an annual income of R " + accidentEarningsGlobal + ". " + preAccidentStandardDescription;
+		}
+		
 		var disclaimerText = "<p><em><b>Disclaimer</b><br>This result does not constitute and hence should not be used in place of a thorough Actuarial analysis of the true claim value. This result represents an estimation of the loss of income which is based on a number of assumptions that may not hold true to the specific case in question.</em></p>";
-		var printableHtml = headingText + "<br><br><br><br>" + birthDateText + accidentDateText + calculationDateText + "<br><br><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML + "<br><br><br><br>" + disclaimerText;
+		var printableHtml = logo + "<br><br>" + headingText + "<br><br><br>" + birthDateText + accidentDateText + calculationDateText + "<br><br><br>" + "<p><b>Pre-Accident Basis:</b> " + preAccidentDescriptionText + "</p><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML + "<br><br><br><br>" + disclaimerText;
 		//var printableHtml = "<p>Hello</p>" + "<br>" + Date(document.getElementById("dateAccident").value) + "<br><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML;
 		w = window.open();
 		w.document.write(printableHtml);
@@ -1097,7 +1124,7 @@ require_once "config.php";
 			document.getElementById("contingencies").reset();
 			document.getElementById("postEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('postEarningsCeilingPaterson')\">Paterson</button>";
 			//document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
-			document.getElementById("preEarningsAccidentDiv").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for uniform increases in income between the accident and the ceiling\" onclick=\"earningsType('simpleUniform')\">Simple Uniform</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for yearly input of income between the accident date and calculation date\" onclick=\"earningsType('detailedYearly')\">Detailed Yearly</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for if the claimant was unemployed at the time of the accident\" onclick=\"earningsType('unemployed')\">Unemployed @ Accident</button>";
+			document.getElementById("preEarningsAccidentDiv").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for uniform increases in income between the accident and the ceiling\" onclick=\"earningsType('simpleUniform')\">Employed @ Accident</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for yearly input of income between the accident date and calculation date\" onclick=\"earningsType('detailedYearly')\">Detailed Yearly</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for if the claimant was unemployed at the time of the accident\" onclick=\"earningsType('unemployed')\">Unemployed @ Accident</button>";
 			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
 			//document.getElementById("postAccidentActuals").innerHTML = postPastEarningsEmptyState;
 			postEarningsSetup('post');
@@ -1112,6 +1139,7 @@ require_once "config.php";
 			document.getElementById("noCapButton").innerHTML = "<button class=\"btn btn-light\" onclick=\"setCap(0)\">No Cap</button>";
 			document.getElementById("preAccidentForm").style.marginLeft = "25%";
 			document.getElementById("preAccidentForm").style.marginRight = "25%";
+			document.getElementById("earningsAccidentWording").innerHTML = "Earnings @ Accident";
 		}
 		else if (num == 2) {
 			if(unemployableVar == 0){
@@ -1129,9 +1157,10 @@ require_once "config.php";
 			//document.getElementById("preEarningsAccidentPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsAccidentPaterson')\">Paterson</button>";
 			document.getElementById("preEarningsCeilingPaterson").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option if you would like to get Paterson values\" onclick=\"paterson('preEarningsCeilingPaterson')\">Paterson</button>";
 			//document.getElementById("earningsStartPre").innerHTML = "";
-			document.getElementById("preEarningsAccidentDiv").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for uniform increases in income between the accident and the ceiling\" onclick=\"earningsType('simpleUniform')\">Simple Uniform</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for yearly input of income between the accident date and calculation date\" onclick=\"earningsType('detailedYearly')\">Detailed Yearly</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for if the claimant was unemployed at the time of the accident\" onclick=\"earningsType('unemployed')\">Unemployed @ Accident</button>";
+			document.getElementById("preEarningsAccidentDiv").innerHTML = "<button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for uniform increases in income between the accident and the ceiling\" onclick=\"earningsType('simpleUniform')\">Employed @ Accident</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for yearly input of income between the accident date and calculation date\" onclick=\"earningsType('detailedYearly')\">Detailed Yearly</button><button type=\"button\" class=\"btn btn-info\" style=\"width: 100%\" title=\"Use this option for if the claimant was unemployed at the time of the accident\" onclick=\"earningsType('unemployed')\">Unemployed @ Accident</button>";
 			document.getElementById("preAccidentForm").style.marginLeft = "25%";
 			document.getElementById("preAccidentForm").style.marginRight = "25%";
+			document.getElementById("earningsAccidentWording").innerHTML = "Earnings @ Accident";
 		}
        
     }
