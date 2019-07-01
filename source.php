@@ -49,6 +49,7 @@ require_once "config.php";
 					  Investment Rate (%):<br>
 					  <input type="number" class="form-control" name="investmentRate" id="investmentRate" value="8.65">
 					  <br>
+					  Gender:<br>
 					  <div class="row">
 						  <div class="col-md-6" id="maleButton">
 							<button class="btn btn-light" onclick="setGender(0)">Male</button>
@@ -278,6 +279,7 @@ require_once "config.php";
 	var accidentEarningsGlobal;
 	var initialAgePreGlobal;
 		
+
 	
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -1095,6 +1097,7 @@ require_once "config.php";
 		
 		var disclaimerText = "<p><em><b>Disclaimer</b><br>This result does not constitute and hence should not be used in place of a thorough Actuarial analysis of the true claim value. This result represents an estimation of the loss of income which is based on a number of assumptions that may not hold true to the specific case in question.</em></p>";
 		var printableHtml = logo + "<br><br>" + headingText + "<br><br><br>" + birthDateText + accidentDateText + calculationDateText + "<br><br><br>" + "<p><b>Pre-Accident Basis:</b> " + preAccidentDescriptionText + "</p><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML + "<br><br><br><br>" + disclaimerText;
+
 		//var printableHtml = "<p>Hello</p>" + "<br>" + Date(document.getElementById("dateAccident").value) + "<br><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML;
 		w = window.open();
 		w.document.write(printableHtml);
@@ -1140,6 +1143,7 @@ require_once "config.php";
 			document.getElementById("preAccidentForm").style.marginLeft = "25%";
 			document.getElementById("preAccidentForm").style.marginRight = "25%";
 			document.getElementById("earningsAccidentWording").innerHTML = "Earnings @ Accident";
+
 		}
 		else if (num == 2) {
 			if(unemployableVar == 0){
@@ -1161,6 +1165,7 @@ require_once "config.php";
 			document.getElementById("preAccidentForm").style.marginLeft = "25%";
 			document.getElementById("preAccidentForm").style.marginRight = "25%";
 			document.getElementById("earningsAccidentWording").innerHTML = "Earnings @ Accident";
+
 		}
        
     }
