@@ -1077,11 +1077,31 @@ require_once "config.php";
 		var dateBirth1 = new Date(document.getElementById("dateBirth").value);
 		var dateAcc1 = new Date(document.getElementById("dateAccident").value);
 		var dateCalc1 = new Date(document.getElementById("dateCalculation").value);
-		var logo = "<div class=\"col-md-8\" style=\"text-align: center\"><img src=\"excapLogo.png\" alt=\"Exchange Capital Logo\" height=\"100px\" width=\"200px\"></div>";
-		var headingText = "<div style=\"text-align: center\"><u><h4>Loss of Income Estimation</h4></u></div>";
+		var htmlBegText = "<!DOCTYPE html><html lang=\"en\">";
+		var htmlEndText = "</html>";
+		var bodyBegText = "<body>";
+		var bodyEndText = "</body>";
+		var headerText = "<head><meta charset=\"utf-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Exchange Capital Road Accident Fund Results</title><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css\" integrity=\"sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS\" crossorigin=\"anonymous\"><link rel=\"stylesheet\" href=\"styles.css\" type=\"text/css\"></head>";
+		var logo = "<div style=\"text-align: center\"><img src=\"excapLogo.png\" alt=\"Exchange Capital Logo\" height=\"100px\" width=\"200px\"></div>";
+		var headingText = "<div style=\"text-align: center\"><u><h5>Loss of Income Estimation</h5></u></div>";
 		var birthDateText = "<p>Date of Birth:<br>" + dateBirth1.getDate() + " " + months[dateBirth1.getMonth()] + " " + dateBirth1.getFullYear() + "</p>";
 		var accidentDateText = "<p>Date of Accident:<br>" + dateAcc1.getDate() + " " + months[dateAcc1.getMonth()] + " " + dateAcc1.getFullYear() + "</p>";
 		var calculationDateText = "<p>Date of Calculation:<br>" + dateCalc1.getDate() + " " + months[dateCalc1.getMonth()] + " " + dateCalc1.getFullYear() + "</p>";
+		if(gend == 0){
+			var genderText = "<p>Gender:<br>" + "Male" + "</p>";
+		}
+		else 
+			{var genderText = "<p>Gender:<br>" + "Female" + "</p>";}
+		if(capIndicator == 1){
+			var capText = "<p>Cap Application:<br>" + "Cap Applied" + "</p>";
+		}
+		else if (capIndicator == 0){
+			var capText = "<p>Cap Application:<br>" + "Cap Not Applied" + "</p>";
+		}
+		var divContainerBegText = "<div class=\"container-fluid\">";
+		var divFormatRowBeg = "<div class=\"row\">";
+		var divFormatColBeg = "<div class=\"col-md-6\" style=\"text-align: center\">";
+		var divFormatEnd = "</div>";
 		var postAccidentDescriptionText = "<p></p><br>";
 		var preAccidentStandardDescription = "The claimant's pre-accident career ceiling would have been R " + preAccidentCeilingGlobal + ". It is expected that the claimant would have retired at the age of " + preAccidentRetirementAgeGlobal + ".";
 		
@@ -1095,8 +1115,9 @@ require_once "config.php";
 			var preAccidentDescriptionText = "The claimant was unemployed at the time of the accident and would have entered the labour market at the age of " + initialAgePreGlobal + ". Upon entering the workplace the claimant would have received an annual income of R " + accidentEarningsGlobal + ". " + preAccidentStandardDescription;
 		}
 		
+		
 		var disclaimerText = "<p><em><b>Disclaimer</b><br>This result does not constitute and hence should not be used in place of a thorough Actuarial analysis of the true claim value. This result represents an estimation of the loss of income which is based on a number of assumptions that may not hold true to the specific case in question.</em></p>";
-		var printableHtml = logo + "<br><br>" + headingText + "<br><br><br>" + birthDateText + accidentDateText + calculationDateText + "<br><br><br>" + "<p><b>Pre-Accident Basis:</b> " + preAccidentDescriptionText + "</p><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML + "<br><br><br><br>" + disclaimerText;
+		var printableHtml = htmlBegText + headerText + bodyBegText + logo + "<br><br>" + headingText + "<br><br><br>" + divContainerBegText + divFormatRowBeg + divFormatColBeg + birthDateText + accidentDateText + calculationDateText + divFormatEnd + divFormatColBeg + genderText + capText + divFormatEnd + divFormatEnd + divFormatEnd + "<br><br><br>"  + divContainerBegText + divFormatRowBeg + divFormatColBeg + "<p><b>Pre-Accident Basis:</b> " + preAccidentDescriptionText + "</p><br>" + divFormatEnd + divFormatEnd + divFormatEnd + "<br><br>" + divContainerBegText + divFormatRowBeg + "<div class=\"col-md-4\"></div>" + "<div class=\"col-md-4\" style=\"text-align: center\">" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML + "</div>" + "<div class=\"col-md-4\"></div>" + divFormatEnd + divFormatEnd + "<br><br><br><br>" + disclaimerText + bodyEndText + htmlEndText;
 
 		//var printableHtml = "<p>Hello</p>" + "<br>" + Date(document.getElementById("dateAccident").value) + "<br><br>" + document.getElementById("preResult").innerHTML + "<br><br>" + document.getElementById("postResult").innerHTML + "<br><br>" + document.getElementById("totalResult").innerHTML;
 		w = window.open();
