@@ -41,13 +41,13 @@ require_once "config.php";
 				<div class="row">	
 					<form id="generalAssumptionsForm" style="margin-left: 33%">
 					  Discount Rate (%):<br>
-					  <input type="number" class="form-control" name="discountRate" id="discountRate" value="2.5">
+					  <input type="number" class="form-control" name="discountRate" id="discountRate" value="2.5" readOnly>
 					  <br>
 					  Inflation Rate (%):<br>
-					  <input type="number" class="form-control" name="inflationRate" id="inflationRate" value="6">
+					  <input type="number" class="form-control" name="inflationRate" id="inflationRate" value="6" readOnly>
 					  <br>
 					  Investment Rate (%):<br>
-					  <input type="number" class="form-control" name="investmentRate" id="investmentRate" value="8.65">
+					  <input type="number" class="form-control" name="investmentRate" id="investmentRate" value="8.65" readOnly>
 					  <br>
 					  Gender:<br>
 					  <div class="row">
@@ -452,7 +452,7 @@ require_once "config.php";
 		return date1 instanceof Date && !isNaN(date1);
 	}
 
-
+	
 
 /*---------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -641,7 +641,7 @@ require_once "config.php";
 			errorVariable = 1;
 			alert(errorMessage);
 		}
-		if(dateCheck(dateAcc)){
+		if(dateCheck(dateAcc) && dateAcc > dateBirth){
 			//alert("valid acc");
 		}
 		else {
@@ -649,7 +649,7 @@ require_once "config.php";
 			errorVariable = 1;
 			alert(errorMessage);
 		}
-		if(dateCheck(dateCalc)){
+		if(dateCheck(dateCalc) && dateCalc > dateAcc){
 			//alert("valid calc");
 		}
 		else {
